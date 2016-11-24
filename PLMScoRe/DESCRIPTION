@@ -2,14 +2,16 @@ Package: PLMScoRe
 Type: Package
 Title: Derives PLM and other indices according to WASM rules
 Version: 0.1.0
+Authors@R: c(person("Stephany", "Fulda", role = c("aut", "cre"),
+                     email = "stephany.fulda@gmail.com"))
 Author: Stephany Fulda
 Maintainer: Stephany Fulda <stephany.fulda@gmail.com>
 Description: PLMScoRe will take information about leg movements, sleep, arousal, and respiratory events
     as input and returns descriptive statistics/indices about leg movement activity including 
-    intermovement interval plots. At the moment only REMLogic event txt files are the supported
-    input. For more information see https://github.com/Steph-Fulda/PLMScoRe
+    intermovement interval plots and PLM indices. At the moment only REMLogic event txt files are the supported
+    input. For more information see https://github.com/Steph-Fulda/PLMScoRe/wiki
 License: MIT + file LICENSE
-Encoding: UTF-8
+URL: https://github.com/Steph-Fulda/PLMScoRe
 LazyData: true
 RoxygenNote: 5.0.1
 Imports: graphics,

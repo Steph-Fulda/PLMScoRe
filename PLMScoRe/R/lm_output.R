@@ -268,7 +268,7 @@ print_tab<-function(tab,co1=c(8,10),...){
   cat("\n",rep("_",sum(co)), "\n", sep="")
   for(j in 1:dim(tab)[1]){
     for(i in 1:dim(tab)[2]){
-      cat(format(tab[j,i], width=co[i]))
+      cat(format(tab[j,i], width=co[i], justify="right"))
     }
     cat("\n")
   }

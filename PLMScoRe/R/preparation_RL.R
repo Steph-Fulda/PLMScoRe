@@ -255,8 +255,9 @@ determine_startstop<-function(RLs, d1,...){
   }
 
   ##housekeeping
-  row.has.na <- apply(d1, 1, function(x){all(is.na(x))})
-  if(length(which(row.has.na==TRUE))>0) d1<-d1[-which(row.has.na==TRUE),]
+	
+  row.has.na <- rowSums(!is.na(d1))
+  if(length(which(row.has.na==0))>0) d1<-d1[-which(row.has.na==0),]
 
   temp<-list(d1, RLs)
   return(temp)
