@@ -1,4 +1,6 @@
-####find annotations in file
+###################
+### find annotation in txt file
+###################
 ann_find<-function(d0,...){
   m0a<-("Wrong file format! Please check manual for file format specifications.")
   mstop<-c("Error. Execution will be stopped...")
@@ -25,13 +27,9 @@ ann_find<-function(d0,...){
   }
 }
 
-
-
-######Helper functions
-
-
-
-
+###################
+### Generates empty RLs object
+###################
 RLspec<-function(...){
 
 #####Helper function, not foreseen to be called by the user
@@ -145,7 +143,9 @@ RLspec<-function(...){
 return(RLs)
 }
 
-
+###################
+### RLs - check I
+###################
 RLspec_test1<-function(RLs,...){
 
 #####Helper function, not foreseen to be called by the user
@@ -167,7 +167,9 @@ RLspec_test1<-function(RLs,...){
 	return(error1)
 }
 
-
+###################
+### RLs - check II
+###################
 RLspec_test2<-function(RLs,...){
 
 #####Helper function, not foreseen to be called by the user
@@ -233,7 +235,9 @@ RLspec_test2<-function(RLs,...){
 }
 
 
-
+###################
+### sub-function to add annotations to existing ones
+###################
 annotation_add<-function(RLs_c, v1,...){
 
 #####Helper function, not foreseen to be called by the user
@@ -253,9 +257,9 @@ annotation_add<-function(RLs_c, v1,...){
 }
 
 
-
-
-
+###################
+### print RLs in a nicer format on screen
+###################
 RLs_prettyprint<-function(RLs,...){
 
 #####Helper function, not foreseen to be called by the user
@@ -294,6 +298,9 @@ RLs_prettyprint<-function(RLs,...){
 		cat("\t", names(RLs[[2]])[4], ": ", unlist(RLs[[2]][4]), "\n", sep=" ")
 }
 
+###################
+### Print only RLs headers
+###################
 RLs_prettyprint2<-function(RLs,...){
 
 #####Helper function, not foreseen to be called by the user
@@ -317,7 +324,9 @@ RLs_prettyprint2<-function(RLs,...){
 }
 
 
-
+###################
+### Print very basic stats
+###################
 prestats_print<-function(RLs,d1,...){
 
 #####Helper function, not foreseen to be called by the user
@@ -363,6 +372,9 @@ prestats_print<-function(RLs,d1,...){
 
 }
 
+###################
+### sub-function to format decimal hour for printing
+###################
 format_hour<-function(x,...){##input is decimal hour
 	x<-as.numeric(x)
 	h<-floor(x)
@@ -371,74 +383,3 @@ format_hour<-function(x,...){##input is decimal hour
 	t<-paste(sprintf("%02d", h), ":",sprintf("%02d", min), ":", sprintf("%06.3f",sec), sep="")
 	return(t)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-##for saving replace .txt in fn with leg_number.txt
-
-
-
-
-
-
-
-###################
-###9 generate Name for saved output
-###################
-##########
-file_name<-function(RLs,...){
-  a<-RLs[[2]][[1]]
-  b<-strsplit(a, "\\", fixed=TRUE)
-  b1<-b[[1]][length(b[[1]])]
-  gsub(".txt", "", b1)
-  return(b1)
-}
-
-#indices
-
-#PLM arousal indec
-#PI old / new
-# %RRLM
-
-##imi
-
-#Total sleep time: 7.73 hours
-#PLMS index: 13.97 per hour
-#PLMW index: 3.87 per hour
-#PLMS-N index: 12.04 per hour
-#PLMS-R index: 18.21 per hour
-#PLMS-arousal index: 0.00 per hour
-#rCLMS index: 0.00 per hour
-#rCLMS-N index: 0.00 per hour
-#rCLMS-R index: 0.00 per hour
-#short IMI CLMS index: 0.00 per hour
-#short IMI CLMW index: 0.00 per hour
-#nonperiodic CLMS index: 15.52 per hour
-#nonperiodic CLMW index: 3.87 per hour
-#mean PLMS duration: 5.03 s
-#mean PLMS-N duration: 5.05 s
-#mean PLMS-R duration: 5.00 s
-#mean PLMW-N duration: 5.00 s
-#mean PLMS IMI: 42.12 s
-#mean PLMS-N IMI: 404.98 s
-#mean PLMS-R IMI: 69.15 s
-#mean PLMW-N IMI: 22.75 s
-#short IMI CLMS duratoin: NaN s
-#short IMI CLMW duration: NaN s
-#right monolateral PLMS index: 4.66 per hour
-#left monolateral PLMS index: 9.31 per hour
-#bilateral PLMS index: 0.00 per hour
-
-
-

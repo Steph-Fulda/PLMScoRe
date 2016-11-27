@@ -3,12 +3,7 @@
 ###################
 ### compute complete statistics
 ###################
-##########
-
 plm_output<-function(d,...){
-
-
-
   stage_n<-c("TIB", "TST", "Wake", "N1", "N2", "N3", "REM", "NREM")
 
   nonCLM<-c(rep(0,7), rep(1,3))
@@ -425,11 +420,12 @@ lm_pdf<-function(RLs, o1,d1,...){
   t2<-table(cut(log(iminr1[iminrs1>0 & iminr1<=90]),breaks=seq(0,4.5,0.1)))
   t3<-table(cut(imi1[imis1>0 & imi1<=90], breaks=seq(0,90,2)))
   t4<-table(cut(log(imi1[imis1>0 & imi1<=90]),breaks=seq(0,4.5,0.1)))
+  y<-max(20, max(t1), max(t2), max(t3), max(t4)); y1<-y+0.2*y
 
-  imi_subplot(t1)
-  imi_subplot(t2, log=1)
-  imi_subplot(t3, nr=0)
-  imi_subplot(t4,log=1, nr=0)
+  imi_subplot(t1, y1=y1)
+  imi_subplot(t2, y1=y1,log=1)
+  imi_subplot(t3, y1=y1, nr=0)
+  imi_subplot(t4,log=1, y1=y1, nr=0)
 
 
 

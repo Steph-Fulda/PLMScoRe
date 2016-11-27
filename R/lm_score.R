@@ -105,6 +105,7 @@ lm_bil<-function(d,...){
         }
       }
     }
+    d1$NoBil[d1$NoBil>0]<-d1$NoBil[d1$NoBil>0]+1
     d1$nonCLM[d1$NoBil>4|d1$Dur>15]<-1
     cat("\tBilateral LM created: ", length(which(d1$T2==12)), "\t[",
         length(which(d1$T2==12 &d1$nonCLM==0)), " CLM, ", length(which(d1$T2==12 & d1$nonCLM==1)), " nonCLM]\n", sep="")
@@ -196,6 +197,7 @@ plm<-function(d, RLs,...){
   for(i in 1:(length(Imi2)-1)){
     if(vt2[i+1]==1) {n<-1; next;next}
     if(vt2[i+1]==0){
+      if(vt[i]==1){n<-1; next}
       if(Imi2[i]>=10 & Imi2[i]<=90){plmN2[i]<-n; plmN2[i+1]<-n+1; n<-n+1}
       if(Imi2[i]<10|Imi2[i]>90) n<-1
     }

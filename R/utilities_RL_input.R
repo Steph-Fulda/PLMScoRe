@@ -1,6 +1,6 @@
-### Utilities, get REMLogic specific user input
-###
-
+###################
+### input function - RL text file information
+###################
 getinfo_txtfile<-function(RLs,filestart,...){
 
   #####Helper function, not foreseen to be called by the user
@@ -73,7 +73,9 @@ getinfo_txtfile<-function(RLs,filestart,...){
   return(RLs)
 }
 
-
+###################
+### sub-function to check that time format is correct
+###################
 check_timeformat<-function(RLs_tf=NA, ex_tf,...){
 
   #####Helper function, not foreseen to be called by the user
@@ -127,6 +129,9 @@ check_timeformat<-function(RLs_tf=NA, ex_tf,...){
   if(as_time==0) return(NA)
 }
 
+###################
+### input function - Legs
+###################
 getinfo_legs<-function(RLs, d1,...){
 
   #####Helper function, not foreseen to be called by the user
@@ -198,6 +203,9 @@ getinfo_legs<-function(RLs, d1,...){
   return(RLs)
 }
 
+###################
+### input function - sleep
+###################
 getinfo_sleep<-function(RLs, d1,...){
 
   #####Helper function, not foreseen to be called by the user
@@ -274,6 +282,9 @@ getinfo_sleep<-function(RLs, d1,...){
   return(RLs)
 }
 
+###################
+### input function - arousal
+###################
 getinfo_arousal<-function(RLs, d1,...){
 
   #####Helper function, not foreseen to be called by the user
@@ -322,7 +333,9 @@ getinfo_arousal<-function(RLs, d1,...){
   return(RLs)
 }
 
-
+###################
+### input function - respiration
+###################
 getinfo_respiration<-function(RLs, d1,...){
 
   #####Helper function, not foreseen to be called by the user
@@ -371,6 +384,9 @@ getinfo_respiration<-function(RLs, d1,...){
   return(RLs)
 }
 
+###################
+### input function - start/stop
+###################
 getinfo_startstop<-function(RLs, d1,...){
 
   #####Helper function, not foreseen to be called by the user
@@ -423,7 +439,9 @@ getinfo_startstop<-function(RLs, d1,...){
   return(RLs)
 }
 
-
+###################
+### input function - scoring rules
+###################
 getinfo_scoring<-function(RLs,...){
 
   #####Helper function, not foreseen to be called by the user
@@ -458,6 +476,9 @@ getinfo_scoring<-function(RLs,...){
   return(RLs)
 }
 
+###################
+### input function - output options
+###################
 getinfo_output<-function(RLs,...){
 
   #####Helper function, not foreseen to be called by the user
