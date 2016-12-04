@@ -1,5 +1,3 @@
-##### PLM output
-
 ###################
 ### compute complete statistics
 ###################
@@ -229,10 +227,15 @@ pprint<-function(statt,sel=NA,table=1, pretty=1,...){
   ifelse(length(statss)>0, statss<-statss, statss<-stats)
   ifelse(length(lmtypess)>0, lmtypess<-lmtypess, lmtypess<-lmtype)
   ifelse(length(stagess)>0, stagess<-c("LMtype", "Statistic",stagess), stagess<-c("LMtype", "Statistic",stages))
-  ifelse(table==1, stagess<-stagess, stagess<-stagess[-c(1,2)])
 
   out1<-out[is.element(out$LMtype, lmtypess) & is.element(out$Statistic, statss), stagess]
+
   if(pretty==1) for(i in 3:dim(out1)[2]) out1[,i]<-round(out1[,i],2)
+
+  ifelse(table==1, out1<-out1, out1<-out1[,-c(1,2)])
+
+
+
   rownames(out1)<-NULL
   return(out1)
 }
