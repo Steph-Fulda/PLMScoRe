@@ -143,15 +143,18 @@ determine_startstop<-function(RLs, d1,...){
   d1$Onset<-NA;
   d1<-d1[order(d1$Time),] ###sort by time
   ##Start
+  startevent<-NA
   starty<-0
   s1<-which(d1$T2==51)
   if(length(s1)==1) {
     start<-d1$Time[s1]
+    startevent<-d1$Time[s1]
     starty<-1
   }
   if(length(s1)>1){
     start<-d1$Time[s1[length(s1)]]
     message("!!!\t More than one start/lights off signal found,\n\t the latest one will be considered !!!\n")
+    startevent<-d1$Time[s1]
     starty<-1
   }
   if(starty==0){
@@ -166,9 +169,20 @@ determine_startstop<-function(RLs, d1,...){
     start<-d1$Time[1]-30
     message("!!!\t No start/lights off signal or sleep scoring found/defined,\n\t it will be assumed that the recording started 30s before\n\t the first found event (LM, arousal, respiratory event) !!!\n")
   }
-  RLs[[2]][[5]]<-start
 
-  if(length(s1)<1){
+  #if scoring starts after start, take scoring as start
+  s2<-which(d1$T==1)
+  if(length(s2)>0){
+    startscore<-d1$Time[s2[1]]
+    if(startscore>start) {
+      start<-startscore
+      message("!!!\t Scoring started after start/lights off signal,\n\t the first wake/sleep epoch present will be considered !!!\n")
+    }
+  }
+
+ RLs[[2]][[5]]<-start
+
+  if(is.na(startevent) |(!is.na(startevent) & startevent!=start)){
     d1<-rbind(d1, rep(NA, 24))
     d1$T[dim(d1)[1]]<-5; d1$T2[dim(d1)[1]]<-51;
     d1$Time[dim(d1)[1]]<-start; d1[dim(d1)[1],RLs[[1]][[6]][[5]]]<-0;
@@ -177,21 +191,24 @@ determine_startstop<-function(RLs, d1,...){
 
 
   ##stop
+ stopevent<-NA
   stopy<-0
   st1<-which(d1$T2==52)
   if(length(st1)==1) {
     stop<-d1$Time[st1]
+    stopevent<-d1$Time[st1]
     stopy<-1
   }
   if(length(st1)>1){
     stop<-d1$Time[st1[length(st1)]]
+    stopevent<-d1$Time[st1[length(st1)]]
     message("!!!\t More than one stop/lights on signal found,\n\t the latest one will be considered !!!\n")
     stopy<-1
   }
   if(stopy==0){
     st2<-which(d1$T==1)
     if(length(st2)>0){
-      stop<-d1$Time[st2[length(st2)]]
+      stop<-d1$Time[st2[length(st2)]]+as.numeric(as.character(d1[st2[length(st2)], RLs[[1]][[6]][[5]]]))
       message("!!!\t No stop/lights on signal found/defined,\n\t the last wake/sleep epoch present will be considered !!!\n")
       stopy<-1
     }
@@ -201,9 +218,20 @@ determine_startstop<-function(RLs, d1,...){
     stop<-d1$Time[dim(d1)[1]]+as.numeric(as.character(d1$Dur[dim(d1)[1]]))+30
     message("!!!\t No stop/lights on signal or sleep scoring found/defined,\n\t it will be assumed that the recording stopped 30s after\n\t the last found event (LM, arousal, respiratory event) !!!\n")
   }
+
+  #If scoring ends before stop, take scoring end
+  st2<-which(d1$T==1)
+  if(length(st2)>0){
+    stopscore<-d1$Time[st2[length(st2)]]+as.numeric(as.character(d1[st2[length(st2)], RLs[[1]][[6]][[5]]]))
+    if(stopscore<stop) {
+      stop<-stopscore
+      message("!!!\t Scoring ended before stop/lights n signal,\n\t the last wake/sleep epoch present will be considered !!!\n")
+    }
+  }
+
   RLs[[2]][[6]]<-stop
 
-  if(length(st1)<1){
+  if(is.na(stopevent)|(!is.na(stopevent) & stop!=stopevent)){
     d1<-rbind(d1, rep(NA, 24))
     d1$T[dim(d1)[1]]<-5; d1$T2[dim(d1)[1]]<-52;
     d1$Time[dim(d1)[1]]<-stop; d1[dim(d1)[1],RLs[[1]][[6]][[5]]]<-0;
@@ -230,23 +258,7 @@ determine_startstop<-function(RLs, d1,...){
   stop2<-as.numeric(difftime(stop, start, units="sec"))
   h2<-which(d1$Onset<stop2 & d1$Offset>stop2 & d1$T==1)
   if(length(h2)==1) {d1$Offset[h2]<-stop2; d1$Dur[h2]<-d1$Offset[h2]-d1$Onset[h2]}
-  ####if sleep scored and start/stop is outside these epochs add wake before/after
-  d1<-d1[order(d1$Onset),]
-  h3<-which(d1$T==1)
-  if(length(h3)>0 && d1$Onset[h3[1]]>0){
-    d1<-rbind(d1, rep(NA, 24))
-    d1$T[dim(d1)[1]]<-1; d1$T2[dim(d1)[1]]<-0;
-    d1$Onset[dim(d1)[1]]<-0; d1$Offset[dim(d1)[1]]<-d1$Onset[h3[1]]
-    d1$Dur[dim(d1)[1]]<-d1$Offset[dim(d1)[1]]-d1$Onset[dim(d1)[1]]
-    d1<-d1[order(d1$Onset),]
-  }
-  if(length(h3)>0 && d1$Offset[h3[length(h3)]]<d1$Onset[d1$T2==52]){
-    d1<-rbind(d1, rep(NA, 24))
-    d1$T[dim(d1)[1]]<-1; d1$T2[dim(d1)[1]]<-0;
-    d1$Onset[dim(d1)[1]]<-d1$Offset[h3[length(h3)]]; d1$Offset[dim(d1)[1]]<-d1$Onset[d1$T2==52]
-    d1$Dur[dim(d1)[1]]<-d1$Offset[dim(d1)[1]]-d1$Onset[dim(d1)[1]]
-    d1<-d1[order(d1$Onset),]
-  }
+
   ####if no sleep scored add wake for complete period
   d1<-d1[order(d1$Onset),]
   h5<-which(d1$T==1)
