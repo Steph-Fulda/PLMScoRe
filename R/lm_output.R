@@ -7,8 +7,6 @@
 
 plm_output<-function(d,...){
 
-
-
   stage_n<-c("TIB", "TST", "Wake", "N1", "N2", "N3", "REM", "NREM")
 
   nonCLM<-c(rep(0,7), rep(1,3))
@@ -24,6 +22,7 @@ plm_output<-function(d,...){
   rn3<-rep(c("","r", "nr", "", "a", "nr", "nr_a", "", "r", "nr"),length(rn1))
   rn<-c(); for(i in 1:length(rn1)) rn[i]<-paste(rn1[i], rn2[i], rn3[i], sep="")
 
+  #LM number
   lm_number<-matrix(NA, 5*10,8)
   for(h in 1:5){
     for(i in 1:10){
@@ -38,6 +37,7 @@ plm_output<-function(d,...){
   lm_number<-as.data.frame(lm_number)
   names(lm_number)<-stage_n;  lm_number<-cbind(LMtype=rn, Statistic="number", lm_number,stringsAsFactors=FALSE)
 
+  #LM indices
   lm_indices<-lm_number[,3:10]
   stage_h<-c();for(i in 1:length(stage))stage_h[i]<-sum(d$Dur[which(is.element(d$T2, stage[[i]]))])/60/60
   for(i in 1:dim(lm_indices)[2]) lm_indices[,i]<-lm_indices[,i]/stage_h[i]
@@ -46,6 +46,7 @@ plm_output<-function(d,...){
   lm_indices<-rbind(lm_indices[1:7,], PI, PInr,lm_indices[8:50,]);
   lm_indices<-cbind(LMtype=c(rn[1:7],c("PI", "PInr"), rn[8:50]), Statistic="no./hour", lm_indices,stringsAsFactors=FALSE)
 
+  #Respiration, arousal
   respar<-matrix(NA, 5,8)
   for(j in 1:8){
     respar[1,j]<-length(which(d$T2==20 & is.element(d$Stage, stage[[j]])))
@@ -59,7 +60,7 @@ plm_output<-function(d,...){
                               respar), stringsAsFactors=FALSE)
   names(respar)[3:10]<-stage_n
 
-
+  #LM duration
   lm_dur_mean<-matrix(NA, length(lmt)*10,8)
   for(h in 1:length(lmt)){
     for(i in 1:10){
@@ -118,6 +119,7 @@ plm_output<-function(d,...){
   lm_dur_max<-as.data.frame(lm_dur_max,stringsAsFactors=FALSE);names(lm_dur_max)<-stage_n;
   lm_dur_max<-cbind(LMtype=rn, Statistic="duration; max", lm_dur_max,stringsAsFactors=FALSE)
 
+  #IMI
   imi_no<-matrix(NA, 3*2,8)
   for(j in 1:8){
     imi_no[1,j]<-length(which(d$IMI < 10 & is.element(d$Stage, stage[[j]])))

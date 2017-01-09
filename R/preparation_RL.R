@@ -1,6 +1,10 @@
 ##### Preparation of RL files
 #####
 
+###################
+### Recode events into common codes
+###################
+
 RL_event_recode<-function(RLs, d1,...){
 
   #####Helper function, not foreseen to be called by the user
@@ -79,6 +83,9 @@ RL_event_recode<-function(RLs, d1,...){
   return(d1)
 }
 
+###################
+### format time variables according to specified format
+###################
 
 format_time<-function(RLs, d1,...){
 
@@ -98,6 +105,10 @@ format_time<-function(RLs, d1,...){
   d1$Time<-strptime(d1[,RLs[[1]][[6]][[3]]], format=RLs[[1]][[6]][[1]])
   return(d1)
 }
+
+###################
+### Determine start and stop of recording
+###################
 
 determine_startstop<-function(RLs, d1,...){
 
@@ -255,7 +266,7 @@ determine_startstop<-function(RLs, d1,...){
   }
 
   ##housekeeping
-	
+
   row.has.na <- rowSums(!is.na(d1))
   if(length(which(row.has.na==0))>0) d1<-d1[-which(row.has.na==0),]
 

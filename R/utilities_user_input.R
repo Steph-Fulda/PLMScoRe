@@ -1,6 +1,6 @@
-### Utilities for user input
-### not to be called directly
-
+###################
+### Ask multiple input - general function
+###################
 ask_info<-function(lookup, display=1, mult=0,req1=0,lumess=NA,mess1=NA, p0=NA,p1=NA,warn1=NA,stop1=NA,...){
 
   #####Helper function, not foreseen to be called by the user
@@ -71,7 +71,9 @@ eval_answer2<-function(x,d=0,...){
   if(d==1 & (x==0||x=="n")) {return(0);stop()}
 }
 
-
+###################
+### Ask single number input - general function
+###################
 ask_info_no<-function(lookup=NA, display=1, mult=0,req1=0,lumess=NA,mess1=NA, p0=NA,warn1=NA,stop1=NA,...){
 
   #####Helper function, not foreseen to be called by the user

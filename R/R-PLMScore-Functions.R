@@ -1,3 +1,7 @@
+###################
+### extract annotation from unstructured RL file
+###################
+
 ####find annotations in file
 ann_find<-function(d0,...){
   m0a<-("Wrong file format! Please check manual for file format specifications.")
@@ -26,11 +30,9 @@ ann_find<-function(d0,...){
 }
 
 
-
-######Helper functions
-
-
-
+###################
+### Creates empty RLs object
+###################
 
 RLspec<-function(...){
 
@@ -88,7 +90,7 @@ RLspec<-function(...){
 #####       2.6. - Stop time
 
 ##### 	RLs = REMLogic specifications
-"RLs"=list(
+RLs<-list(
 	Global=list(
 		Legs=list	(
 				"Left leg channel name"=NA,
@@ -145,6 +147,9 @@ RLspec<-function(...){
 return(RLs)
 }
 
+###################
+### Test existing RLs object I
+###################
 
 RLspec_test1<-function(RLs,...){
 
@@ -167,6 +172,9 @@ RLspec_test1<-function(RLs,...){
 	return(error1)
 }
 
+###################
+### test existing RLs object II
+###################
 
 RLspec_test2<-function(RLs,...){
 
@@ -190,8 +198,6 @@ RLspec_test2<-function(RLs,...){
 #####		- in case arousals were specified, whether these are present
 #####		- if there were respiratory events specified, whether present
 #####		- if start/stop events were specified, whether they are present
-#####
-
   gstop<-c("Error. Execution will be stopped...")
 
 	##Basic file read in
@@ -232,7 +238,9 @@ RLspec_test2<-function(RLs,...){
 	return(RLs)
 }
 
-
+###################
+### add annotations to existing one without duplicates
+###################
 
 annotation_add<-function(RLs_c, v1,...){
 
@@ -253,11 +261,10 @@ annotation_add<-function(RLs_c, v1,...){
 }
 
 
-
-
-
+###################
+### nicer way to print the RLs object
+###################
 RLs_prettyprint<-function(RLs,...){
-
 #####Helper function, not foreseen to be called by the user
 #####Asks user specify arousal event annotations
 #####		required input:
@@ -266,7 +273,6 @@ RLs_prettyprint<-function(RLs,...){
 #####			none
 #####		output:
 #####			Will print the REMLogic specification file in a nice format
-
 	message("THESE ARE YOUR SPECIFICATIONS:\n")
 
 	cat(names(RLs)[1], ":", sep="")
@@ -294,8 +300,11 @@ RLs_prettyprint<-function(RLs,...){
 		cat("\t", names(RLs[[2]])[4], ": ", unlist(RLs[[2]][4]), "\n", sep=" ")
 }
 
-RLs_prettyprint2<-function(RLs,...){
+###################
+### print only first level RLs entries
+###################
 
+RLs_prettyprint2<-function(RLs,...){
 #####Helper function, not foreseen to be called by the user
 #####Asks user specify arousal event annotations
 #####		required input:
@@ -304,8 +313,6 @@ RLs_prettyprint2<-function(RLs,...){
 #####			none
 #####		output:
 #####			Will print the REMLogic specification file headers only, in a nice format
-
-
 	cat(names(RLs)[1], ":", sep="")
 		for(i in 1:(length(RLs[[1]])-1)){
 			cat("\t", i, " - ", names(RLs[[1]])[i], "\n",sep="")
@@ -316,10 +323,11 @@ RLs_prettyprint2<-function(RLs,...){
 		}
 }
 
-
+###################
+### generate and print very basic information
+###################
 
 prestats_print<-function(RLs,d1,...){
-
 #####Helper function, not foreseen to be called by the user
 #####At the end of data read in and before PLMscoring will print an overview over available data
 #####
@@ -336,7 +344,6 @@ prestats_print<-function(RLs,d1,...){
 #####			- TST (optional on sleep stages scored)
 #####			- No of arousals (optional on arousals scored)
 #####			- No of respiratory events (optional on respiration scored)
-
 	message("BASIC INFO:\n")
 	cat("\tRegistration started: ", "\t",as.character(RLs[[2]][[5]]), "\n", sep="")
 
@@ -363,6 +370,9 @@ prestats_print<-function(RLs,d1,...){
 
 }
 
+###################
+###nicely format decimal hours
+###################
 format_hour<-function(x,...){##input is decimal hour
 	x<-as.numeric(x)
 	h<-floor(x)

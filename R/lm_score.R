@@ -256,7 +256,6 @@ plm_classify<-function(v,...){
 ###################
 ###7 add sleep stage and arousal
 ###################
-##########
 
 add_sleep<-function(d,...){
   d$AR<-0; d$Stage<-NA

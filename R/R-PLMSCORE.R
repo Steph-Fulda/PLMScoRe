@@ -1,8 +1,3 @@
-######
-### to start the whole thing up for the first time
-###  source(file.choose())
-### and select R file
-
 #' Runs PLMScoRe
 #'
 #' Will read in a REMLogic event txt file and return descriptors of
@@ -13,16 +8,15 @@
 #' @param silent option to run the function interactively (default) or automatic
 #' @param ... Additional arguments (currently not specified)
 #'
-#' @details If you are using \code{StartPLMScore} for the first time you will want to run it in the
-#' interactive mode with no input arguments (\code{resultXY<-StartPLMScore()}). During the
-#' interactive phase you will be asked to define the input to the actual scoring function.
+#' @details If you are using \code{StartPLMScore} for the first time you will want to run it
+#' in the interactive mode with no input arguments (\code{resultXY<-StartPLMScore()}). During
+#' the interactive phase you will be asked to define the input to the actual scoring function.
 #' All this information will be saved in an RLs object (short for REMLogic specifications).
-#' At the end of interative phase you will have the chance to save this RLs object, so that
-#' the next time you can load these specifications without going through the interactive phase
-#' again. When you start with  \code{StartPLMScore()} after you have selected a REMLogic event
-#' txt file you will be asked whether you want to load an existing specification file. Even if
-#' load and existing file, you will still have the opportunity to change the input (unless you
-#' set \code{silent=1}).
+#' At the end you will have the chance to save this RLs object, so that next time you will be
+#' able to load these specifications without going through the interactive phase again.
+#' In fact, after you have selected a REMLogic event txt file you will be asked whether you want
+#' to load an existing specification file. Even if you do load an existing file, you will still
+#' have the opportunity to change the input (unless you set \code{silent=1}).
 #' If you want to use this function for batch processing of a number of event files that all have the
 #' same specifications, you can run it in silent mode with all inputs provided (see example below).
 #'
@@ -61,25 +55,14 @@ StartPLMScoRe<-function(RLs=NULL,fn=NA,silent=0,...){
 	options(digit.secs=3)
 
 	###Messages
-	m0<-("Please select REMLogic event file...")
-	m0a<-("Wrong file format! Please check manual for file format specifications.")
-  m0bA1<-("TESTING THE SPECIFICATION FILE....")
+	  m0<-("Please select REMLogic event file...")
+    m0bA1<-("TESTING THE SPECIFICATION FILE....")
     m0bA2<-("Wrong file format! Please check manual for file format specifications.")
 	  m0bA3<-("Input specification file has one or more errors and will not be used. ")
     m0bA4<-("Initial check: ok")
-  m0bB1<-("Do you want to load an existing REMLogic specification file? (y/n or 1/0)    ")
+    m0bB1<-("Do you want to load an existing REMLogic specification file? (y/n or 1/0)    ")
 	  m0bB2<-("Select REMLogic specification file (.RData)...")
-
-
-  m0bd<-("TESTING THE SPECIFICATION FILE....")
-	m0be<-("Basic testing found no grave errors")
-	m0bf<-("Input specification file has one or more errors and will not be used. ")
-
-
-
-	m0bc<-("Loaded REMLogic specification file lacks vital informtion.\n Please complete specifications below")
-
-	mstop<-c("Error. Execution will be stopped...")
+	  mstop<-c("Error. Execution will be stopped...")
 
 ##### (0) Read in REMLogic event txt file
 
@@ -248,7 +231,6 @@ StartPLMScoRe<-function(RLs=NULL,fn=NA,silent=0,...){
 	message("THANK YOU, that seems to be all.\n")
 	message("Running final check...\n")
 	}
-	#return(RLs)
 
 ###Basic transformation, recoding etc.
 
@@ -258,8 +240,6 @@ StartPLMScoRe<-function(RLs=NULL,fn=NA,silent=0,...){
 
 ###Very basic statistics output
 	prestats_print(RLs, d1)
-
-	#res<-list(RLs, d1)
 
 ###Actual scoring
 	d1<-lm_unil(d1) 	## join monolateral LMA events with < 0.5 s offset to onset
@@ -284,19 +264,3 @@ StartPLMScoRe<-function(RLs=NULL,fn=NA,silent=0,...){
 
 	options(op)
 }
-
-
-# add info to tables
-# output tables
-
-#PLMoutput<-function(
-# txt
-# pdf
-# screen
-
-# indices for LM
-# indices for PLM
-# PI old and new
-# IMI
-
-# save/output
