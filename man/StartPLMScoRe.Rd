@@ -2,7 +2,8 @@
 % Please edit documentation in R/R-PLMSCORE.R
 \name{StartPLMScoRe}
 \alias{StartPLMScoRe}
-\title{PLMScoRe function}
+\title{Runs PLMScoRe
+PLMScoRe function}
 \usage{
 StartPLMScoRe(RLs = NULL, fn = NA, silent = 0, ...)
 }
@@ -23,16 +24,15 @@ Will read in a REMLogic event txt file and return descriptors of
 leg movements
 }
 \details{
-If you are using \code{StartPLMScore} for the first time you will want to run it in the
-interactive mode with no input arguments (\code{resultXY<-StartPLMScore()}). During the
-interactive phase you will be asked to define the input to the actual scoring function.
+If you are using \code{StartPLMScore} for the first time you will want to run it
+in the interactive mode with no input arguments (\code{resultXY<-StartPLMScore()}). During
+the interactive phase you will be asked to define the input to the actual scoring function.
 All this information will be saved in an RLs object (short for REMLogic specifications).
-At the end of interative phase you will have the chance to save this RLs object, so that
-the next time you can load these specifications without going through the interactive phase
-again. When you start with  \code{StartPLMScore()} after you have selected a REMLogic event
-txt file you will be asked whether you want to load an existing specification file. Even if
-load and existing file, you will still have the opportunity to change the input (unless you
-set \code{silent=1}).
+At the end you will have the chance to save this RLs object, so that next time you will be
+able to load these specifications without going through the interactive phase again.
+In fact, after you have selected a REMLogic event txt file you will be asked whether you want
+to load an existing specification file. Even if you do load an existing file, you will still
+have the opportunity to change the input (unless you set \code{silent=1}).
 If you want to use this function for batch processing of a number of event files that all have the
 same specifications, you can run it in silent mode with all inputs provided (see example below).
 }

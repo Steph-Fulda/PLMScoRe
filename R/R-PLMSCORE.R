@@ -71,7 +71,7 @@ StartPLMScoRe<-function(RLs=NULL,fn=NA,silent=0,...){
 		message(m0)
 		fn<-utils::choose.files(caption="Please select REMLogic event file...", multi=FALSE)
 	}
-	d0<-scan(fn, what="character", sep="\t", quote="", quiet=TRUE, strip.white=FALSE, blank.lines.skip=FALSE)
+	d0<-scan(fn, what="character", sep="\n", quote="", quiet=TRUE, strip.white=FALSE, blank.lines.skip=FALSE)
 
 ##### (0a) Initial file check (needs to have at least 2 empty rows, data table starts after the last empty row)
 
@@ -95,7 +95,8 @@ StartPLMScoRe<-function(RLs=NULL,fn=NA,silent=0,...){
 			if(class(test2)!="try-error") {
 			  message(m0bA4)
 			  RLs[[2]][[1]]<-fn
-				d1<-utils::read.table(fn, skip=filestart+RLs[[1]][[6]][[2]], header=FALSE, sep="\t", stringsAsFactors=FALSE )
+			  h<-which(d0=="")
+				d1<-utils::read.table(fn, skip=filestart, header=FALSE, sep="\t", stringsAsFactors=FALSE,blank.lines.skip=FALSE , strip.white=FALSE)
 				if(dim(d1)[2]!=RLs[[1]][[6]][[2]]) stop("Something went wrong! Please start again!")
 				if(dim(d1)[1]<1) stop("This file contains no data! Please start again!")
 				names(d1)[RLs[[1]][[6]][[5]]]<-"Dur"; d1$Dur<-as.numeric(as.character(d1$Dur))
@@ -120,7 +121,7 @@ StartPLMScoRe<-function(RLs=NULL,fn=NA,silent=0,...){
 					test2<-try(RLs<-RLspec_test2(RLs, fn))
 					if(class(test2)!="try-error") {
 						message(m0bA4); RLs[[2]][[1]]<-fn
-						d1<-utils::read.table(fn, skip=filestart+RLs[[1]][[6]][[2]], header=FALSE, sep="\t", stringsAsFactors=FALSE )
+						d1<-utils::read.table(fn, skip=filestart, header=FALSE, sep="\t", stringsAsFactors=FALSE )
 						if(dim(d1)[2]!=RLs[[1]][[6]][[2]]) stop("Something went wrong! Please start again!")
 						if(dim(d1)[1]<1) stop("This file contains no data! Please start again!")
 						RLs[[1]][[7]][[1]]<-annotation_all
@@ -138,7 +139,7 @@ StartPLMScoRe<-function(RLs=NULL,fn=NA,silent=0,...){
 				if(class(t1)=="try-error") stop(mstop)
 
 			##read in the file with the new specifications (mandatory)
-				d1<-utils::read.table(fn, skip=filestart+RLs[[1]][[6]][[2]], header=FALSE, sep="\t", stringsAsFactors=FALSE )
+				d1<-utils::read.table(fn, skip=filestart, header=FALSE, sep="\t", stringsAsFactors=FALSE )
 					if(dim(d1)[2]!=RLs[[1]][[6]][[2]]) stop("Something went wrong! Please start again!")
 					if(dim(d1)[1]<1) stop("This file contains no data! Please start again!")
 				RLs[[1]][[7]][[1]]<-annotation_all
