@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ##### Preparation of RL files
 #####
 
@@ -6,11 +5,9 @@
 ### Recode events into common codes
 ###################
 
-=======
 ###################
 ### Recode events based on RLs specifications
 ###################
->>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 RL_event_recode<-function(RLs, d1,...){
 
   #####Helper function, not foreseen to be called by the user
@@ -90,14 +87,11 @@ RL_event_recode<-function(RLs, d1,...){
 }
 
 ###################
-<<<<<<< HEAD
 ### format time variables according to specified format
 ###################
 
-=======
 ### Format start time based on RLs specification
 ###################
->>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 format_time<-function(RLs, d1,...){
 
   #####Helper function, not foreseen to be called by the user
@@ -118,14 +112,12 @@ format_time<-function(RLs, d1,...){
 }
 
 ###################
-<<<<<<< HEAD
 ### Determine start and stop of recording
 ###################
 
-=======
+
 ### Determin start/stop of recording
 ###################
->>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 determine_startstop<-function(RLs, d1,...){
 
   #####Helper function, not foreseen to be called by the user

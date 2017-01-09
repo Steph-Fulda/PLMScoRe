@@ -1,13 +1,6 @@
 ###################
-<<<<<<< HEAD
 ### extract annotation from unstructured RL file
 ###################
-
-####find annotations in file
-=======
-### find annotation in txt file
-###################
->>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 ann_find<-function(d0,...){
   m0a<-("Wrong file format! Please check manual for file format specifications.")
   mstop<-c("Error. Execution will be stopped...")
@@ -34,17 +27,10 @@ ann_find<-function(d0,...){
   }
 }
 
-<<<<<<< HEAD
 
-###################
-### Creates empty RLs object
-###################
-
-=======
 ###################
 ### Generates empty RLs object
 ###################
->>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 RLspec<-function(...){
 
 #####Helper function, not foreseen to be called by the user
@@ -159,14 +145,8 @@ return(RLs)
 }
 
 ###################
-<<<<<<< HEAD
-### Test existing RLs object I
-###################
-
-=======
 ### RLs - check I
 ###################
->>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 RLspec_test1<-function(RLs,...){
 
 #####Helper function, not foreseen to be called by the user
@@ -189,14 +169,9 @@ RLspec_test1<-function(RLs,...){
 }
 
 ###################
-<<<<<<< HEAD
-### test existing RLs object II
-###################
-
-=======
 ### RLs - check II
 ###################
->>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
+
 RLspec_test2<-function(RLs,...){
 
 #####Helper function, not foreseen to be called by the user
@@ -259,17 +234,9 @@ RLspec_test2<-function(RLs,...){
 	return(RLs)
 }
 
-<<<<<<< HEAD
 ###################
 ### add annotations to existing one without duplicates
 ###################
-
-=======
-
-###################
-### sub-function to add annotations to existing ones
-###################
->>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 annotation_add<-function(RLs_c, v1,...){
 
 #####Helper function, not foreseen to be called by the user
@@ -290,11 +257,7 @@ annotation_add<-function(RLs_c, v1,...){
 
 
 ###################
-<<<<<<< HEAD
-### nicer way to print the RLs object
-=======
 ### print RLs in a nicer format on screen
->>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 ###################
 RLs_prettyprint<-function(RLs,...){
 #####Helper function, not foreseen to be called by the user
@@ -333,15 +296,8 @@ RLs_prettyprint<-function(RLs,...){
 }
 
 ###################
-<<<<<<< HEAD
-### print only first level RLs entries
-###################
-=======
 ### Print only RLs headers
 ###################
-RLs_prettyprint2<-function(RLs,...){
->>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
-
 RLs_prettyprint2<-function(RLs,...){
 #####Helper function, not foreseen to be called by the user
 #####Asks user specify arousal event annotations
@@ -361,17 +317,10 @@ RLs_prettyprint2<-function(RLs,...){
 		}
 }
 
-<<<<<<< HEAD
-###################
-### generate and print very basic information
-###################
-
-=======
 
 ###################
 ### Print very basic stats
 ###################
->>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 prestats_print<-function(RLs,d1,...){
 #####Helper function, not foreseen to be called by the user
 #####At the end of data read in and before PLMscoring will print an overview over available data
@@ -416,11 +365,7 @@ prestats_print<-function(RLs,d1,...){
 }
 
 ###################
-<<<<<<< HEAD
-###nicely format decimal hours
-=======
 ### sub-function to format decimal hour for printing
->>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 ###################
 format_hour<-function(x,...){##input is decimal hour
 	x<-as.numeric(x)

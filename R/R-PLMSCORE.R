@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 #' Runs PLMScoRe
-=======
 #' PLMScoRe function
->>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 #'
 #' Will read in a REMLogic event txt file and return descriptors of
 #' leg movements
@@ -229,10 +226,8 @@ StartPLMScoRe<-function(RLs=NULL,fn=NA,silent=0,...){
 	message("THANK YOU, that seems to be all.\n")
 	message("Running final check...\n")
 	}
-<<<<<<< HEAD
 
-=======
->>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
+
 ###Basic transformation, recoding etc.
 
 	d1<-RL_event_recode(RLs, d1) #assigns numeric codes to events and removes all events we are not interested in

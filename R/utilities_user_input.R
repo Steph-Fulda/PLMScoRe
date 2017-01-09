@@ -1,9 +1,5 @@
 ###################
-<<<<<<< HEAD
-### Ask multiple input - general function
-=======
 ### general purpose input function with multiple input
->>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 ###################
 ask_info<-function(lookup, display=1, mult=0,req1=0,lumess=NA,mess1=NA, p0=NA,p1=NA,warn1=NA,stop1=NA,...){
 
@@ -80,11 +76,7 @@ eval_answer2<-function(x,d=0,...){
 }
 
 ###################
-<<<<<<< HEAD
-### Ask single number input - general function
-=======
 ### general purpose function for single input
->>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 ###################
 ask_info_no<-function(lookup=NA, display=1, mult=0,req1=0,lumess=NA,mess1=NA, p0=NA,warn1=NA,stop1=NA,...){
   #####Helper function, not foreseen to be called by the user

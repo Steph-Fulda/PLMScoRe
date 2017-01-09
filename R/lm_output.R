@@ -2,10 +2,8 @@
 ### compute complete statistics
 ###################
 plm_output<-function(d,...){
-<<<<<<< HEAD
 
-=======
->>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
+
   stage_n<-c("TIB", "TST", "Wake", "N1", "N2", "N3", "REM", "NREM")
 
   nonCLM<-c(rep(0,7), rep(1,3))
