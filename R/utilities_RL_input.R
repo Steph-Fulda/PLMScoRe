@@ -1,5 +1,9 @@
 ###################
+<<<<<<< HEAD
 ### Ask input - file format
+=======
+### input function - RL text file information
+>>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 ###################
 getinfo_txtfile<-function(RLs,filestart,...){
 
@@ -74,7 +78,11 @@ getinfo_txtfile<-function(RLs,filestart,...){
 }
 
 ###################
+<<<<<<< HEAD
 ### Test for correct time format
+=======
+### sub-function to check that time format is correct
+>>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 ###################
 check_timeformat<-function(RLs_tf=NA, ex_tf,...){
 
@@ -130,7 +138,11 @@ check_timeformat<-function(RLs_tf=NA, ex_tf,...){
 }
 
 ###################
+<<<<<<< HEAD
 ### Ask input - leg movements
+=======
+### input function - Legs
+>>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 ###################
 getinfo_legs<-function(RLs, d1,...){
 
@@ -204,7 +216,11 @@ getinfo_legs<-function(RLs, d1,...){
 }
 
 ###################
+<<<<<<< HEAD
 ### Ask input - sleep
+=======
+### input function - sleep
+>>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 ###################
 getinfo_sleep<-function(RLs, d1,...){
 
@@ -283,7 +299,11 @@ getinfo_sleep<-function(RLs, d1,...){
 }
 
 ###################
+<<<<<<< HEAD
 ### Ask input - arousal
+=======
+### input function - arousal
+>>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 ###################
 getinfo_arousal<-function(RLs, d1,...){
 
@@ -334,7 +354,11 @@ getinfo_arousal<-function(RLs, d1,...){
 }
 
 ###################
+<<<<<<< HEAD
 ### Ask input - respiration
+=======
+### input function - respiration
+>>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 ###################
 getinfo_respiration<-function(RLs, d1,...){
 
@@ -385,7 +409,11 @@ getinfo_respiration<-function(RLs, d1,...){
 }
 
 ###################
+<<<<<<< HEAD
 ### Ask input - start/stop events
+=======
+### input function - start/stop
+>>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 ###################
 getinfo_startstop<-function(RLs, d1,...){
 
@@ -440,7 +468,11 @@ getinfo_startstop<-function(RLs, d1,...){
 }
 
 ###################
+<<<<<<< HEAD
 ### Ask input - choice of rules
+=======
+### input function - scoring rules
+>>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 ###################
 getinfo_scoring<-function(RLs,...){
 
@@ -477,7 +509,11 @@ getinfo_scoring<-function(RLs,...){
 }
 
 ###################
+<<<<<<< HEAD
 ### Ask input - choice of output
+=======
+### input function - output options
+>>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 ###################
 getinfo_output<-function(RLs,...){
 

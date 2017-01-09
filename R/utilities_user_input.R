@@ -1,5 +1,9 @@
 ###################
+<<<<<<< HEAD
 ### Ask multiple input - general function
+=======
+### general purpose input function with multiple input
+>>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 ###################
 ask_info<-function(lookup, display=1, mult=0,req1=0,lumess=NA,mess1=NA, p0=NA,p1=NA,warn1=NA,stop1=NA,...){
 
@@ -55,7 +59,9 @@ ask_info<-function(lookup, display=1, mult=0,req1=0,lumess=NA,mess1=NA, p0=NA,p1
   options(warn=0)
 }
 
-###helper function for multiple numbers input
+###################
+### sub-function to deal with multiple input
+###################
 eval_answer<-function(x,...){
   er<-try(x1<-eval(parse(text=paste("c(", x, ")", sep=""))), silent=TRUE)
   if(class(er)=="try-error"|is.null(x1)){
@@ -63,7 +69,9 @@ eval_answer<-function(x,...){
   }else{return(x1)}
 }
 
-#helper function for binary input
+###################
+### subfunction to deal with binary input
+###################
 eval_answer2<-function(x,d=0,...){
   if(d==0 & (x==0||x=="n"||is.na(x)||x==""||(x!=1 & x!="y"))) {return(0);stop()}
   if(d==0 & (x==1||x=="y")) {return(1);stop()}
@@ -72,10 +80,13 @@ eval_answer2<-function(x,d=0,...){
 }
 
 ###################
+<<<<<<< HEAD
 ### Ask single number input - general function
+=======
+### general purpose function for single input
+>>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 ###################
 ask_info_no<-function(lookup=NA, display=1, mult=0,req1=0,lumess=NA,mess1=NA, p0=NA,warn1=NA,stop1=NA,...){
-
   #####Helper function, not foreseen to be called by the user
   #####Let's user choose from a list of entries or ask for free input, similar to ask_info but here output is a number.
   #####		required input:
@@ -107,7 +118,6 @@ ask_info_no<-function(lookup=NA, display=1, mult=0,req1=0,lumess=NA,mess1=NA, p0
   #####			messTry<-"Put in number"; out<-ask_info(list1, mess1=messTry)
   #####
   #####
-
   temp1<-NA								## create tempory variables
 
   if(display==1 & any(!is.na(lookup))){				## display list of numbered entries

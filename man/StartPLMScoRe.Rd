@@ -2,7 +2,7 @@
 % Please edit documentation in R/R-PLMSCORE.R
 \name{StartPLMScoRe}
 \alias{StartPLMScoRe}
-\title{Runs PLMScoRe}
+\title{PLMScoRe function}
 \usage{
 StartPLMScoRe(RLs = NULL, fn = NA, silent = 0, ...)
 }

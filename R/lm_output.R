@@ -1,12 +1,11 @@
-##### PLM output
-
 ###################
 ### compute complete statistics
 ###################
-##########
-
 plm_output<-function(d,...){
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
   stage_n<-c("TIB", "TST", "Wake", "N1", "N2", "N3", "REM", "NREM")
 
   nonCLM<-c(rep(0,7), rep(1,3))
@@ -39,8 +38,8 @@ plm_output<-function(d,...){
 
   #LM indices
   lm_indices<-lm_number[,3:10]
-  stage_h<-c();for(i in 1:length(stage))stage_h[i]<-sum(d$Dur[which(is.element(d$T2, stage[[i]]))])/60/60
-  for(i in 1:dim(lm_indices)[2]) lm_indices[,i]<-lm_indices[,i]/stage_h[i]
+  stage_h<-c();for(i in 1:length(stage))stage_h[i]<-sum(d$Dur[which(is.element(d$T2, stage[[i]]))])/60
+  for(i in 1:dim(lm_indices)[2]) lm_indices[,i]<-lm_indices[,i]/(stage_h[i]/60)
   PI<-round(lm_number[which(lm_number$LMtype=="PLM"),3:10]/lm_number[which(lm_number$LMtype=="CLM"),3:10],2);
   PInr<-round(lm_number[which(lm_number$LMtype=="PLMnr"),3:10]/lm_number[which(lm_number$LMtype=="CLMnr"),3:10],2);
   lm_indices<-rbind(lm_indices[1:7,], PI, PInr,lm_indices[8:50,]);
@@ -50,10 +49,10 @@ plm_output<-function(d,...){
   respar<-matrix(NA, 5,8)
   for(j in 1:8){
     respar[1,j]<-length(which(d$T2==20 & is.element(d$Stage, stage[[j]])))
-    respar[2,j]<-respar[1,j]/stage_h[j]
+    respar[2,j]<-respar[1,j]/(stage_h[j]/60)
     respar[3,j]<-length(which(d$T2==20 & d$rLM==1 & is.element(d$Stage, stage[[j]])))*100/(respar[1,j])
     respar[4,j]<-length(which(d$T2==30 & is.element(d$Stage, stage[[j]])))
-    respar[5,j]<-respar[4,j]/stage_h[j]
+    respar[5,j]<-respar[4,j]/(stage_h[j]/60)
   }
   respar<-as.data.frame(cbind(LMtype=c("R events", "R events", "R events", "Arousal", "Arousal"),
                               Statistic=c("number", "no./hour", "% with CLM", "number", "no./hour"),
@@ -236,14 +235,34 @@ pprint<-function(statt,sel=NA,table=1, pretty=1,...){
   ifelse(length(statss)>0, statss<-statss, statss<-stats)
   ifelse(length(lmtypess)>0, lmtypess<-lmtypess, lmtypess<-lmtype)
   ifelse(length(stagess)>0, stagess<-c("LMtype", "Statistic",stagess), stagess<-c("LMtype", "Statistic",stages))
-  ifelse(table==1, stagess<-stagess, stagess<-stagess[-c(1,2)])
 
   out1<-out[is.element(out$LMtype, lmtypess) & is.element(out$Statistic, statss), stagess]
-  if(pretty==1) for(i in 3:dim(out1)[2]) out1[,i]<-round(out1[,i],2)
+
+  if(pretty==1) {
+    h<-which(out1$LMtype!="Sleep/Wake")
+    if(length(h)>0){
+        for(i in 3:dim(out1)[2]) out1[h,i]<-round(out1[h,i],2)
+    }
+  }
+
+  ifelse(table==1, out1<-out1, out1<-out1[,-c(1,2)])
+
+
+
   rownames(out1)<-NULL
   return(out1)
 }
-
+###################
+### format minutes
+###################
+format_min<-function(x,...){
+  a<-as.numeric(x)
+  h<-floor(a/60)
+  min<-floor(a-h*60)
+  sec<-(a-h*60-min)*60
+  t<-paste(sprintf("%02d", h), ":",sprintf("%02d", min), ":", sprintf("%06.3f",sec), sep="")
+  return(t)
+}
 ###################
 ### screen print table function
 ###################
@@ -256,7 +275,7 @@ print_tab<-function(tab,co1=c(8,10),...){
     ns<-which(is.element(tab$LMtype, "Sleep/Wake"))
     s<-tab[ns,]
     tab<-tab[-ns,]
-    s1<-substr(format_hour(s[3:10]),1,8)
+    s1<-substr(format_min(s[3:10]),1,8)
     sn<-c(" ", "", s1)
     cat(rep("_",sum(co)), "\n", sep="")
     for(i in 1:length(nn)) cat(format(nn[i], width=co[i], justify="right"))
@@ -372,7 +391,7 @@ lm_pdf<-function(RLs, o1,d1,...){
   if(is.na(RLs[[1]][[3]][[1]])) {pc11[c(4,10,16),c(3:10)]<-c("-"); a<-0}
   if(is.na(RLs[[1]][[4]][[1]])) {pc11[c(2:7,14:15),c(3:10)]<-c("-"); r<-0}
 
-  s1<-substr(format_hour(pc11[1,3:10]),1,8)
+  s1<-substr(format_min(pc11[1,3:10]),1,8)
   #print_tab(pc11, co1=c(10,9))
 
   fout<-gsub(".txt","_summary.pdf", RLs[[2]][[1]])
@@ -427,11 +446,12 @@ lm_pdf<-function(RLs, o1,d1,...){
   t2<-table(cut(log(iminr1[iminrs1>0 & iminr1<=90]),breaks=seq(0,4.5,0.1)))
   t3<-table(cut(imi1[imis1>0 & imi1<=90], breaks=seq(0,90,2)))
   t4<-table(cut(log(imi1[imis1>0 & imi1<=90]),breaks=seq(0,4.5,0.1)))
+  y<-max(20, max(t1), max(t2), max(t3), max(t4)); y1<-y+0.2*y
 
-  imi_subplot(t1)
-  imi_subplot(t2, log=1)
-  imi_subplot(t3, nr=0)
-  imi_subplot(t4,log=1, nr=0)
+  imi_subplot(t1, y1=y1)
+  imi_subplot(t2, y1=y1,log=1)
+  imi_subplot(t3, y1=y1, nr=0)
+  imi_subplot(t4,log=1, y1=y1, nr=0)
 
 
 

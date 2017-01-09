@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #' Runs PLMScoRe
+=======
+#' PLMScoRe function
+>>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 #'
 #' Will read in a REMLogic event txt file and return descriptors of
 #' leg movements
@@ -72,7 +76,7 @@ StartPLMScoRe<-function(RLs=NULL,fn=NA,silent=0,...){
 	}
 	d0<-scan(fn, what="character", sep="\t", quote="", quiet=TRUE, strip.white=FALSE, blank.lines.skip=FALSE)
 
-##### (0a) Initial file check (needs to have at least 2 empty rows, data table starts after the third)
+##### (0a) Initial file check (needs to have at least 2 empty rows, data table starts after the last empty row)
 
 	h<-which(d0=="")
 	annotation_all<-ann_find(d0)
@@ -167,9 +171,6 @@ StartPLMScoRe<-function(RLs=NULL,fn=NA,silent=0,...){
 				RLs<-getinfo_output(RLs)
 		}
 	}
-
-	##things we have by now: complete RLs, d1, annotations all scored
-
 		###print RLs
 	RLs_prettyprint(RLs)
 		##ask for change (only if silent = 0)
@@ -206,9 +207,6 @@ StartPLMScoRe<-function(RLs=NULL,fn=NA,silent=0,...){
 			an5<-eval_answer2(readline(prompt="Do you want to change anything?(y/n or 1/0)   "), d=0)
 			if(an5==0) an1<-0
 		}
-
-	#RLs_prettyprint(RLs)
-
 	####Run cursory check again on RLs file
 		test1<-RLspec_test1(RLs)
 		if(test1>0) {message("Something went wrong!"); stop()}
@@ -231,7 +229,10 @@ StartPLMScoRe<-function(RLs=NULL,fn=NA,silent=0,...){
 	message("THANK YOU, that seems to be all.\n")
 	message("Running final check...\n")
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7e99900f2cf1f2f67a955f110e3751d765ba7156
 ###Basic transformation, recoding etc.
 
 	d1<-RL_event_recode(RLs, d1) #assigns numeric codes to events and removes all events we are not interested in

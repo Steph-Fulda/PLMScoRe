@@ -1,2 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^img$
+^PLMScoRe_0\.1\.0\.tar\.gz$
+^PLMScoRe_0\.1\.0\.zip$
+^Home\.md$
+^README\.md$
