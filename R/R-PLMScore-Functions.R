@@ -1,4 +1,17 @@
 ###################
+### get filestart based on tab and new line
+###################
+filestart<-function(fn,...){
+  d0<-scan(fn, what="character", sep="\n", quote="", quiet=TRUE, strip.white=FALSE, blank.lines.skip=FALSE)
+  h<-which(d0=="")
+  fs_n<-h[length(h)]+1
+  d0a<-scan(fn, what="character", sep="\t", quote="", quiet=TRUE, strip.white=FALSE, blank.lines.skip=FALSE)
+  h_t<-which(d0a=="")
+  fs_t<-h_t[length(h_t)]+1
+  fs<-list(fs_n=fs_n,fs_t=fs_t)
+  return(fs)
+}
+###################
 ### extract annotation from unstructured RL file
 ###################
 ann_find<-function(d0,...){
@@ -16,7 +29,7 @@ ann_find<-function(d0,...){
     h1<-d0[h+1]
     a<-which(grepl("Events Included", h1))
     if(length(a)==1){
-      annotation_all<-d0[(h[a]+1):(h[a+1]-1)]
+      annotation_all<-d0[(h[a]+2):(h[a+1]-1)]
       return(annotation_all)
       stop()
     }
@@ -200,8 +213,8 @@ RLspec_test2<-function(RLs,...){
 	d0<-scan(RLs[[2]][[1]], what="character", sep="\t", quote="", quiet=TRUE, strip.white=FALSE, blank.lines.skip=FALSE)
 	h<-which(d0=="")
 	if(length(h)<2){message("File cannot be read. "); stop(gstop)}
-	filestart<-h[length(h)]+1
-	d1<-utils::read.table(RLs[[2]][[1]], skip=h[length(h)]+1+RLs[[1]][[6]][[2]], header=FALSE, sep="\t", stringsAsFactors=FALSE )
+	fs_n<-filestart(RLs[[2]][[1]])$fs_n
+	d1<-utils::read.table(RLs[[2]][[1]], skip=fs_n, header=FALSE, sep="\t", stringsAsFactors=FALSE )
 		if(dim(d1)[2]!=RLs[[1]][[6]][[2]]) stop("Something went wrong! Please start again!")
 		if(dim(d1)[1]<1) stop("This file contains no data! Please start again!")
 
