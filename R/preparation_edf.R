@@ -241,29 +241,3 @@ determine_startstop_edf<-function(d1,...){
 }
 
 
-###
-edf2<-edf_event_recode(edf1)
-edf3<-determine_startstop_edf(edf2)
-
-
-###Actual scoring
-d1<-lm_unil(edf3) 	## join monolateral LMA events with < 0.5 s offset to onset
-d2<-lm_dur1(d1) 	## remove LMA events < 0.5 s
-d3<-lm_dur2(d2) 	## mark LM > 10 s as nonCLM
-d4<-lm_bil(d3)  	## join bilateral LM
-rrules<-1
-d5<-rlm_edf(rrules,d4) 	## mark rLM
-d6<-plm(d5)	## determine plm status
-d7<-add_sleep(d6)	## add sleep stage and arousal
-o1<-plm_output(d7) ##
-i2<-add_imi(d7) ## extract IMInr and IMI
-
-if(is.element("screen", RLs[[2]][[4]])) {print_core(o1); imi_plot(d7)}
-if(is.element("csv", RLs[[2]][[4]])) {
-  fout<-gsub(".txt", "_plm_results.csv", RLs[[2]][[1]])
-  utils::write.csv(o1, file=fout, quote=FALSE, na="", row.names=FALSE)
-}
-if(is.element("pdf", RLs[[2]][[4]])) lm_pdf(RLs, o1, d1)
-
-res<-list(RLs=RLs, Data=d1, Stats=o1, IMI=i2)
-

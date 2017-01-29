@@ -31,7 +31,7 @@
 #'
 #' \dontrun{fnlist<-list.files("D:\\Test\\Scorings\\", pattern=".edf", full.names=TRUE)}
 #'
-#' \dontrun{for(i in 1:length(fnlist)) StartPLMScore_edf(fn=fnlist[i], rrules=1, output=c("1,2,3"screen", "csv", "pdf")}
+#' \dontrun{for(i in 1:length(fnlist)) StartPLMScore_edf(fn=fnlist[i], rrules=1, output=c("screen", "csv", "pdf"))}
 StartPLMScoRe_edf<-function(fn=NA,rrules=NA,output=NA,...){
   op<-options()
   options(digit.secs=3)
