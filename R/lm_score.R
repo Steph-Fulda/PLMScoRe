@@ -149,6 +149,41 @@ rlm<-function(RLs, d,...){
 }
 
 #####################################
+#### 5a label respiratory LM edf
+#####################################
+
+## new variable rLM (for LM 1 if rLM, for R events 1 if at least 1 CLMr)
+
+rlm_edf<-function(rrules, d,...){
+  d$rLM<-NA; d$rLM[is.element(d$T2, c(10:12))]<-0
+
+  if(length(which(d$T==3))>0){ #at least 1 R event
+
+    if(!is.na(rrules) & rrules==2){
+      ll<- -0.5
+      ul<- 0.5
+    }else{
+      ll<- -2
+      ul<- 10.25
+    }
+
+    for(i in 1:dim(d)[1]){
+      if(is.element(d$T2[i], c(10:12))){
+        h<-which(is.element(d$T2, 20) & ((d$Onset[i]>=d$Offset+ll & d$Onset[i]<=d$Offset+ul)|
+                                           (d$Offset[i]>=d$Offset+ll & d$Offset[i]<=d$Offset+ul)|
+                                           (d$Onset[i]<d$Offset+ll & d$Offset[i]>d$Offset+ul)))
+        if(length(h)>0){
+          d$rLM[i]<-1
+          if(d$nonCLM[i]==0) d$rLM[h]<-1
+        }
+      }
+    }
+  }
+  cat("\tNumber of respiratory CLM: ", length(which(d$rLM==1 & d$nonCLM==0)), "\n", sep="")
+  return(d)
+}
+
+#####################################
 #### 6 determine PLM
 #####################################
 

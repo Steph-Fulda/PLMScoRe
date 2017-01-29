@@ -449,3 +449,85 @@ lm_pdf<-function(RLs, o1,d1,...){
 
   grDevices::dev.off()
 }
+
+###################
+### one page pdf output
+###################
+
+lm_pdf_edf<-function(o1,d1,fn,rrules,...){
+  pc1<-pprint(o1, c("no./hour", "CLM", "PLM", "PLMa", "PI", "CLMnr", "PLMnr", "PLMnr_a", "PInr", "Sleep/Wake",
+                    "IMI", "IMInr", "log; mean", "log; SD", "duration", "R events", "Arousal", "% with CLM"))
+  pc11<-pc1[c(1,3,6,7,9,12,13,2,4,5,8,10,11,14,15,16),]
+
+  s<-1; a<-1; r<-1; rr<-rrules
+  pc11[is.na(pc11)]<-c("-");
+  if(length(which(d1$T==1))==0) {pc11[,c(4, 6:10)]<-c("-"); s<-0}
+  if(length(which(d1$T2==30))==0) {pc11[c(4,10,16),c(3:10)]<-c("-"); a<-0}
+  if(length(which(d1$T2==20))==0) {pc11[c(2:7,14:15),c(3:10)]<-c("-"); r<-0}
+
+  s1<-substr(format_min(pc11[1,3:10]),1,8)
+  #print_tab(pc11, co1=c(10,9))
+
+  fout<-gsub(".edf","_summary.pdf", fn)
+
+  grDevices::pdf(fout,width=8.267 , height=11.692)
+
+  graphics::par(oma=c(2,2,2,2))
+
+  nf<-graphics::layout(rbind(	c(1),
+                              c(2,3),
+                              c(4,5),
+                              c(6)),
+                       heights=c(0.8,0.5,0.5, 0.2))
+
+
+  graphics::par(mar=c(0,7,0,7))
+  x1<-92; h<-3; y1<-(dim(pc11)[1]+5)*h
+  graphics::plot(c(0,0), xlim=c(0,x1), ylim=c(0,y1), ann=FALSE, axes=FALSE, type="n")
+  graphics::segments(-1,y1,x1+1,y1, xpd=TRUE, lwd=2)
+  for(i in 1:(dim(pc11)[2]-2)) graphics::text(20+i*8, y1-h, names(pc11)[i+2], font=2,adj=c(0,0), xpd=TRUE)
+  for(i in 1:(dim(pc11)[2]-2)) graphics::text(20+i*8, y1-h*2, s1[i], cex=0.8,adj=c(0,0), xpd=TRUE)
+  graphics::segments(-1,y1-h*3,x1+1,y1-h*3, xpd=TRUE, lwd=2)
+
+  for(i in 2:dim(pc11)[1]) graphics::text(0,y1-h*(2+i), pc11[i,1], adj=c(0,0), xpd=TRUE, font=2)
+  for(i in 2:dim(pc11)[1]) graphics::text(10,y1-h*(2+i), pc11[i,2], adj=c(0,0), xpd=TRUE)
+  for(j in 1:(dim(pc11)[1]-2)){
+    for(i in 2:dim(pc11)[1]) {
+      graphics::text(20+j*8,y1-h*(2+i), pc11[i,j+2], adj=c(0,0), xpd=TRUE)
+    }
+  }
+  graphics::segments(-1,y1-h*(dim(pc11)[1]+2.5),x1+1,y1-h*(dim(pc11)[1]+2.5), xpd=TRUE, lwd=2)
+
+  lab1<-c("CLM: candidate LM, LM: leg movements, PLM: periodic LM, IMI: intermovement interval, PI: periodicity index, R events: respiratory events\n")
+  lab2<-c("nr: non respiratory eventa associated, a: arousal associated\n")
+  lab3<-c("TIB: time in bed, TST: total sleep time\n")
+  ifelse(rr==1, lab4a<-c("-2.0 to 10.25 s"), lab4a<-c("-0.5 to 0.5 s"))
+  lab4<-paste(c("PLM scoring rules: WASM 2016, CLMr defintion: "), lab4a, "\n",sep="")
+  ifelse(s==0, lab5a<-c("**No sleep scorings available\n"), lab5a<-c(""))
+  ifelse(r==0, lab5b<-c("**No respiratory event scorings available\n"), lab5b<-c(""))
+  ifelse(a==0, lab5c<-c("**No arousal scorings available"), lab5c<-c(""))
+  lab5<-paste(lab5a, lab5b, lab5c, sep="")
+  lab<-paste(lab1, lab2, lab3, lab4, lab5)
+  graphics::text(0,y1-h*(dim(pc11)[1]+2.8), lab, cex=0.75, adj=c(0,1), xpd=TRUE)
+
+  graphics::par(mar=c(0,0,0,0))
+  imi1<-d1$IMI[!is.na(d1$IMI)]
+  imis1<-d1$Stage[!is.na(d1$IMI)]
+  iminr1<-d1$IMInr[!is.na(d1$IMInr)]
+  iminrs1<-d1$Stage[!is.na(d1$IMInr)]
+
+  t1<-table(cut(iminr1[iminrs1>0 & iminr1<=90], breaks=seq(0,90,2)))
+  t2<-table(cut(log(iminr1[iminrs1>0 & iminr1<=90]),breaks=seq(0,4.5,0.1)))
+  t3<-table(cut(imi1[imis1>0 & imi1<=90], breaks=seq(0,90,2)))
+  t4<-table(cut(log(imi1[imis1>0 & imi1<=90]),breaks=seq(0,4.5,0.1)))
+  y<-max(20, max(t1), max(t2), max(t3), max(t4)); y1<-y+0.2*y
+
+  imi_subplot(t1, y1=y1)
+  imi_subplot(t2, y1=y1,log=1)
+  imi_subplot(t3, y1=y1, nr=0)
+  imi_subplot(t4,log=1, y1=y1, nr=0)
+
+
+
+  grDevices::dev.off()
+}
