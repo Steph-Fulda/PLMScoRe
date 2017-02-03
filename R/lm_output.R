@@ -36,10 +36,10 @@ plm_output<-function(d,...){
 
   #LM indices
   lm_indices<-lm_number[,3:10]
-  stage_h<-c();for(i in 1:length(stage))stage_h[i]<-sum(d$Dur[which(is.element(d$T2, stage[[i]]))])/60
-  for(i in 1:dim(lm_indices)[2]) lm_indices[,i]<-lm_indices[,i]/(stage_h[i]/60)
-  PI<-round(lm_number[which(lm_number$LMtype=="PLM"),3:10]/lm_number[which(lm_number$LMtype=="CLM"),3:10],2);
-  PInr<-round(lm_number[which(lm_number$LMtype=="PLMnr"),3:10]/lm_number[which(lm_number$LMtype=="CLMnr"),3:10],2);
+  stage_h<-c();for(i in 1:length(stage))stage_h[i]<-sum(d$Dur[which(is.element(d$T2, stage[[i]]))])
+  for(i in 1:dim(lm_indices)[2]) lm_indices[,i]<-lm_indices[,i]/(stage_h[i]/3600)
+  PI<-roundup(lm_number[which(lm_number$LMtype=="PLM"),3:10]/lm_number[which(lm_number$LMtype=="CLM"),3:10],2);
+  PInr<-roundup(lm_number[which(lm_number$LMtype=="PLMnr"),3:10]/lm_number[which(lm_number$LMtype=="CLMnr"),3:10],2);
   lm_indices<-rbind(lm_indices[1:7,], PI, PInr,lm_indices[8:50,]);
   lm_indices<-cbind(LMtype=c(rn[1:7],c("PI", "PInr"), rn[8:50]), Statistic="no./hour", lm_indices,stringsAsFactors=FALSE)
 
@@ -47,10 +47,10 @@ plm_output<-function(d,...){
   respar<-matrix(NA, 5,8)
   for(j in 1:8){
     respar[1,j]<-length(which(d$T2==20 & is.element(d$Stage, stage[[j]])))
-    respar[2,j]<-respar[1,j]/(stage_h[j]/60)
+    respar[2,j]<-respar[1,j]/(stage_h[j]/3600)
     respar[3,j]<-length(which(d$T2==20 & d$rLM==1 & is.element(d$Stage, stage[[j]])))*100/(respar[1,j])
     respar[4,j]<-length(which(d$T2==30 & is.element(d$Stage, stage[[j]])))
-    respar[5,j]<-respar[4,j]/(stage_h[j]/60)
+    respar[5,j]<-respar[4,j]/(stage_h[j]/3600)
   }
   respar<-as.data.frame(cbind(LMtype=c("R events", "R events", "R events", "Arousal", "Arousal"),
                               Statistic=c("number", "no./hour", "% with CLM", "number", "no./hour"),
@@ -141,12 +141,27 @@ plm_output<-function(d,...){
 
   res1<-rbind(rep(NA,10),lm_indices,imi, respar, lm_number, lm_dur_mean, lm_dur_sd, lm_dur_min, lm_dur_max)
 
-  res1[1,]<-c("Sleep/Wake", "duration", stage_h)
+  res1[1,]<-c("Sleep/Wake", "duration, s", stage_h)
   rownames(res1)<-NULL
   for(i in 3:10) res1[,i]<-as.numeric(as.character(res1[,i]))
   return(res1)
 
 }
+###################
+### round with 0.5 up
+###################
+roundup<-function(x,n=0,...){
+  posneg = sign(x)
+  z = abs(x)*10^n
+  z = z + 0.5
+  z = trunc(z)
+  z = z/10^n
+  z*posneg
+}
+
+
+
+
 
 ###################
 ### select single values
@@ -239,7 +254,7 @@ pprint<-function(statt,sel=NA,table=1, pretty=1,...){
   if(pretty==1) {
     h<-which(out1$LMtype!="Sleep/Wake")
     if(length(h)>0){
-        for(i in 3:dim(out1)[2]) out1[h,i]<-round(out1[h,i],2)
+        for(i in 3:dim(out1)[2]) out1[h,i]<-roundup(out1[h,i],2)
     }
   }
 
@@ -261,6 +276,18 @@ format_min<-function(x,...){
   t<-paste(sprintf("%02d", h), ":",sprintf("%02d", min), ":", sprintf("%06.3f",sec), sep="")
   return(t)
 }
+
+###################
+### format seconds
+###################
+format_sec<-function(x,...){
+  a<-as.numeric(x)
+  h<-floor(a/3600)
+  min<-floor((a-h*3600)/60)
+  sec<-(a-h*3600-min*60)
+  t<-paste(sprintf("%02d", h), ":",sprintf("%02d", min), ":", sprintf("%06.3f",sec), sep="")
+  return(t)
+}
 ###################
 ### screen print table function
 ###################
@@ -273,7 +300,7 @@ print_tab<-function(tab,co1=c(8,10),...){
     ns<-which(is.element(tab$LMtype, "Sleep/Wake"))
     s<-tab[ns,]
     tab<-tab[-ns,]
-    s1<-substr(format_min(s[3:10]),1,8)
+    s1<-substr(format_sec(s[3:10]),1,8)
     sn<-c(" ", "", s1)
     cat(rep("_",sum(co)), "\n", sep="")
     for(i in 1:length(nn)) cat(format(nn[i], width=co[i], justify="right"))
@@ -300,9 +327,11 @@ print_tab<-function(tab,co1=c(8,10),...){
 
 print_core<-function(plm_stats,...){
   pc1<-pprint(plm_stats, c("no./hour", "CLM", "PLM", "PLMa", "PI", "CLMnr", "PLMnr", "PLMnr_a", "PInr", "Sleep/Wake",
-                           "IMI", "IMInr", "log; mean", "log; SD", "duration", "R events", "Arousal", "% with CLM"))
+                           "IMI", "IMInr", "log; mean", "log; SD", "duration", "R events", "Arousal", "% with CLM",
+                           "duration, s"))
   pc2<-pprint(plm_stats, c("number", "CLM", "PLM", "PLMa",  "CLMnr", "PLMnr", "PLMnr_a",  "Sleep/Wake", "IMI", "IMInr",
-                           "<10s; number", ">90s; number", "10-90s; number", "duration", "R events", "Arousal"))
+                           "<10s; number", ">90s; number", "10-90s; number", "duration", "R events", "Arousal",
+                           "duration, s"))
   pc11<-pc1[c(1,3,6,7,9,12,13,2,4,5,8,10,11,14,15,16),]
   pc21<-pc2[c(1,11,14,15,5,6,7,10,12,13,2,3,4,8,9),]
 
@@ -380,7 +409,8 @@ imi_subplot<-function(v,cw=2,log=0,nr=1,y1=0,...){
 
 lm_pdf<-function(RLs, o1,d1,...){
   pc1<-pprint(o1, c("no./hour", "CLM", "PLM", "PLMa", "PI", "CLMnr", "PLMnr", "PLMnr_a", "PInr", "Sleep/Wake",
-                           "IMI", "IMInr", "log; mean", "log; SD", "duration", "R events", "Arousal", "% with CLM"))
+                           "IMI", "IMInr", "log; mean", "log; SD", "duration", "R events", "Arousal", "% with CLM",
+                    "duration, s"))
   pc11<-pc1[c(1,3,6,7,9,12,13,2,4,5,8,10,11,14,15,16),]
 
   s<-1; a<-1; r<-1; rr<-RLs[[2]][[3]]
@@ -389,7 +419,7 @@ lm_pdf<-function(RLs, o1,d1,...){
   if(is.na(RLs[[1]][[3]][[1]])) {pc11[c(4,10,16),c(3:10)]<-c("-"); a<-0}
   if(is.na(RLs[[1]][[4]][[1]])) {pc11[c(2:7,14:15),c(3:10)]<-c("-"); r<-0}
 
-  s1<-substr(format_min(pc11[1,3:10]),1,8)
+  s1<-substr(format_sec(pc11[1,3:10]),1,8)
   #print_tab(pc11, co1=c(10,9))
 
   fout<-gsub(".txt","_summary.pdf", RLs[[2]][[1]])
@@ -462,7 +492,8 @@ lm_pdf<-function(RLs, o1,d1,...){
 
 lm_pdf_edf<-function(o1,d1,fn,rrules,...){
   pc1<-pprint(o1, c("no./hour", "CLM", "PLM", "PLMa", "PI", "CLMnr", "PLMnr", "PLMnr_a", "PInr", "Sleep/Wake",
-                    "IMI", "IMInr", "log; mean", "log; SD", "duration", "R events", "Arousal", "% with CLM"))
+                    "IMI", "IMInr", "log; mean", "log; SD", "duration", "R events", "Arousal", "% with CLM",
+                    "duration, s"))
   pc11<-pc1[c(1,3,6,7,9,12,13,2,4,5,8,10,11,14,15,16),]
 
   s<-1; a<-1; r<-1; rr<-rrules
@@ -471,7 +502,7 @@ lm_pdf_edf<-function(o1,d1,fn,rrules,...){
   if(length(which(d1$T2==30))==0) {pc11[c(4,10,16),c(3:10)]<-c("-"); a<-0}
   if(length(which(d1$T2==20))==0) {pc11[c(2:7,14:15),c(3:10)]<-c("-"); r<-0}
 
-  s1<-substr(format_min(pc11[1,3:10]),1,8)
+  s1<-substr(format_sec(pc11[1,3:10]),1,8)
   #print_tab(pc11, co1=c(10,9))
 
   fout<-gsub(".edf","_summary.pdf", fn)
