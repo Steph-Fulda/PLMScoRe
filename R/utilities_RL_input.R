@@ -477,6 +477,36 @@ getinfo_scoring<-function(RLs,...){
 }
 
 ###################
+### input function - scoring rules
+###################
+getinfo_scoring_edf<-function(...){
+
+  #####Helper function, not foreseen to be called by the user
+  #####Asks user specify arousal event annotations
+  #####		required input:
+  #####			RLs 		- REMLogic specification file (cannot be empty)
+  #####		optional input:
+  #####			none
+  #####		output:
+  #####			The asked for information will be written to the RL specification file,
+  #####			which will be returned.
+
+  #m1a<-("Which set of PLMS rules do you want to chose?")
+  #m1aa<-c("Currently, only the newest WASM (IRLSSG/EURLSSG) 2016 rules are implemented.\n")
+  #m2a<-c("You indicated that no respiratory events were scored.
+  #       Please be aware, that this may be a limitation in patients with
+  #       obstructive sleep apnea!\n")
+  m3a<-c("There are two different criteria for respiratory event related LM:
+         [1] - 2s to +10.25 s (recommended)
+         [2] - 0.5 s to +0.5 s" )
+  m3aa<-c("Please choose one:   ")
+
+    message(m3a)
+    rrules<-as.integer(readline(prompt=m3aa))
+
+  return(rrules)
+}
+###################
 ### input function - output options
 ###################
 getinfo_output<-function(RLs,...){
@@ -506,3 +536,32 @@ getinfo_output<-function(RLs,...){
   return(RLs)
 }
 
+###################
+### input function - output options edf
+###################
+getinfo_output_edf<-function(...){
+
+  #####Helper function, not foreseen to be called by the user
+  #####Asks user specify arousal event annotations
+  #####		required input:
+  #####			RLs 		- REMLogic specification file (cannot be empty)
+  #####		optional input:
+  #####			none
+  #####		output:
+  #####			The asked for information will be written to the RL specification file,
+  #####			which will be returned.
+
+  m1a<-("What kind of output would you like to have? (multiple outputs possible)")
+  m3a<-c("\t[1] screen\n\t[2] csv file \n\t[3] pdf ")
+  m3aa<-c("Please input number(s):   ")
+  op<-c("screen", "csv", "pdf")
+
+  message(m1a)
+  message(m3a)
+  an1<-eval_answer(readline(prompt=m3aa))
+  if(all(is.na(an1))){
+    output<-op[1]
+  }else{output<-op[an1]}
+
+  return(output)
+}
