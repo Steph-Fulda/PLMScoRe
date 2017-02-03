@@ -203,6 +203,7 @@ determine_startstop_edf<-function(d1,...){
   ####transform time to sec from start
   d1$Onset<-d1$Onset-start
 
+
   #Create new variable offset
   d1$Offset<-d1$Onset+d1$Dur
 
@@ -216,7 +217,7 @@ determine_startstop_edf<-function(d1,...){
   h1<-which(d1$Onset<0 & d1$Offset>0 & d1$T==1)
   if(length(h1)==1) {d1$Onset[h1]<-0; d1$Dur[h1]<-d1$Offset[h1]-d1$Onset[h1]}
 
-  h2<-which(d1$Onset<stop & d1$Offset>stop & d1$T==1)
+  h2<-which(d1$Onset<stop-start & d1$Offset>stop-start & d1$T==1)
   if(length(h2)==1) {d1$Offset[h2]<-stop-start; d1$Dur[h2]<-d1$Offset[h2]-d1$Onset[h2]}
 
   ####if no sleep scored add wake for complete period
