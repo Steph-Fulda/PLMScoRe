@@ -188,7 +188,7 @@ rlm_edf<-function(rrules, d,...){
 #####################################
 
 plm<-function(d, RLs,...){
-  d$PLM<-NA; d$PLMnr<-NA; d$PLM	#1 = without removing rLM, 2 = with rLM removed
+  d$PLM<-NA; d$PLMnr<-NA; 	#1 = without removing rLM, 2 = with rLM removed
   d$PLM_no<-NA; d$PLMnr_no<-NA		#No in PLM series
   d$PLM_Sno<-NA; d$PLMnr_Sno<-NA		#No of PLM series
   d$PLM_l<-NA; d$PLMnr_l<-NA		#Length of PLM series (No PLM)
@@ -215,8 +215,11 @@ plm<-function(d, RLs,...){
     }
   }
   plm1<-plm_classify(plmN)
-  IMI<-Imi; IMI[which(vt==1)]<-NA; if(is.element(length(vt), which(vt==1))) vt<-vt[-length(vt)];
+
+  IMI<-c(NA, diff(v)); IMI[which(vt==1)]<-NA; if(is.element(length(vt), which(vt==1))) vt<-vt[-length(vt)];
   IMI[which(vt==1)+1]<-NA; d$IMI[h1]<-IMI
+
+
 
   ####Case 2 with removing rLM
 
@@ -238,7 +241,7 @@ plm<-function(d, RLs,...){
     }
   }
   plm2<-plm_classify(plmN2)
-  IMInr<-Imi2; IMInr[which(vt2==1)]<-NA; if(is.element(length(vt2), which(vt2==1))) vt2<-vt2[-length(vt2)];
+  IMInr<-c(NA,diff(v2)); IMInr[which(vt2==1)]<-NA; if(is.element(length(vt2), which(vt2==1))) vt2<-vt2[-length(vt2)];
   IMInr[which(vt2==1)+1]<-NA; d$IMInr[h2]<-IMInr
 
   #####add to d1 data table
