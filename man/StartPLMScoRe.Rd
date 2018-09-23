@@ -63,4 +63,3 @@ same specifications, you can run it in silent mode with all inputs provided (see
 
 \dontrun{for(i in 1:length(fnlist)) StartPLMScore(RLs=RLs, fn=fnlist[i], silent=1)}
 }
-

@@ -235,7 +235,7 @@ plm<-function(d, RLs,...){
   for(i in 1:(length(Imi2)-1)){
     if(vt2[i+1]==1) {n<-1; next;next}
     if(vt2[i+1]==0){
-      if(vt[i]==1){n<-1; next}
+      if(vt2[i]==1){n<-1; next}
       if(Imi2[i]>=10 & Imi2[i]<=90){plmN2[i]<-n; plmN2[i+1]<-n+1; n<-n+1}
       if(Imi2[i]<10|Imi2[i]>90) n<-1
     }

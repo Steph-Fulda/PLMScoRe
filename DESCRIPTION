@@ -1,7 +1,7 @@
 Package: PLMScoRe
 Type: Package
 Title: Derives PLM and other indices according to WASM rules
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: c(person("Stephany", "Fulda", role = c("aut", "cre"),
                      email = "stephany.fulda@gmail.com"))
 Author: Stephany Fulda
@@ -13,7 +13,7 @@ Description: PLMScoRe will take information about leg movements, sleep, arousal,
 License: MIT + file LICENSE
 URL: https://github.com/Steph-Fulda/PLMScoRe
 LazyData: true
-RoxygenNote: 5.0.1
+RoxygenNote: 6.1.0
 Imports: graphics,
     stats,
     grDevices,
