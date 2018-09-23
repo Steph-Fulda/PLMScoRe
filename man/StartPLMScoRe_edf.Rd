@@ -45,4 +45,3 @@ and your output options. Alternatively (see examples below) you can specify both
 
 \dontrun{for(i in 1:length(fnlist)) StartPLMScore_edf(fn=fnlist[i], rrules=1, output=c("screen", "csv", "pdf"))}
 }
-

@@ -80,4 +80,3 @@ REM sleep.
 \dontrun{pprint(lmstat, sel=c("PLM", "PLMnr", "no./hour", "TST"))}
 
 }
-
