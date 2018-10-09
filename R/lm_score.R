@@ -223,7 +223,7 @@ plm<-function(d, RLs,...){
 
   ####Case 2 with removing rLM
 
-  h2<-which(is.element(d$T2, c(10:12)) & (is.na(d$rLM)|d$rLM==0))
+  h2<-which(is.element(d$T2, c(10:12)) & ((is.na(d$rLM)|d$rLM==0) | (!is.na(d$nonCLM) & d$nonCLM==1)))
 
   v2<-d$Onset[h2]
   vt2<-d$nonCLM[h2]
