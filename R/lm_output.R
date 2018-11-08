@@ -141,7 +141,7 @@ plm_output<-function(d,...){
 
   res1<-rbind(rep(NA,10),lm_indices,imi, respar, lm_number, lm_dur_mean, lm_dur_sd, lm_dur_min, lm_dur_max)
 
-  res1[1,]<-c("Sleep/Wake", "duration, s", stage_h)
+  res1[1,]<-c("Sleep/Wake", "duration; s", stage_h)
   rownames(res1)<-NULL
   for(i in 3:10) res1[,i]<-as.numeric(as.character(res1[,i]))
   return(res1)
