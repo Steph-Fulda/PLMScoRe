@@ -10,29 +10,24 @@ lm_unil<-function(d,...){
   llmj<-0; rlmj<-0
   d$Offset<-NA; d$Offset<-d$Onset+d$Dur
   d<-d[order(d$Onset),]
-  for(i in 1:dim(d)[1]){
-    if(i<=dim(d)[1]){
-      if(d$T2[i]==10 & !is.na(d$T2[i])){
-        a<-which(d$T2==10 & d$Onset>=d$Offset[i] & d$Onset< d$Offset[i]+0.5)
-        if(length(a)>0) {
-          d$Offset[i]<-max(d$Offset[c(a,i)])
-          d$Dur[i]<-d$Offset[i]-d$Onset[i]
-          d<-d[-a,]
-          llmj<-llmj+1
-        }
+  for(i in dim(d)[1]:2){
+    if(d$T2[i]==10 & !is.na(d$T2[i])){
+      a<-which(d$T2==10 & d$Offset<d$Offset[i] & d$Offset>=d$Onset[i]-0.5)
+      if(length(a)>0) {
+        d$Offset[i-1]<-max(d$Offset[c(a,i)])
+        d$Dur[i]<-d$Offset[i-1]-d$Onset[i-1]
+        d<-d[-i,]
       }
-      if(d$T2[i]==11& !is.na(d$T2[i])){
-        a<-which(d$T2==11 & d$Onset>=d$Offset[i] & d$Onset< d$Offset[i]+0.5)
-        if(length(a)>0){
-          d$Offset[i]<-max(d$Offset[c(a,i)])
-          d$Dur[i]<-d$Offset[i]-d$Onset[i]
-          d<-d[-a,]
-          rlmj<-rlmj+1
-        }
+    }
+    if(d$T2[i]==11& !is.na(d$T2[i])){
+      a<-which(d$T2==11 & d$Offset<d$Offset[i] & d$Offset>=d$Onset[i]-0.5)
+      if(length(a)>0) {
+        d$Offset[i-1]<-max(d$Offset[c(a,i)])
+        d$Dur[i]<-d$Offset[i-1]-d$Onset[i-1]
+        d<-d[-i,]
       }
     }
   }
-
   return(d)
 }
 
