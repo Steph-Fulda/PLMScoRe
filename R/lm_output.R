@@ -1,6 +1,6 @@
-###################
+###################-
 ### compute complete statistics
-###################
+###################-
 plm_output<-function(d,...){
 
 
@@ -147,9 +147,9 @@ plm_output<-function(d,...){
   return(res1)
 
 }
-###################
+###################-
 ### round with 0.5 up
-###################
+###################-
 roundup<-function(x,n=0,...){
   posneg = sign(x)
   z = abs(x)*10^n
@@ -163,9 +163,9 @@ roundup<-function(x,n=0,...){
 
 
 
-###################
+###################-
 ### select single values
-###################
+###################-
 
 #' Selects and returns a descriptive value from the LM statistic table
 #'
@@ -265,9 +265,9 @@ pprint<-function(statt,sel=NA,table=1, pretty=1,...){
   rownames(out1)<-NULL
   return(out1)
 }
-###################
+###################-
 ### format minutes
-###################
+###################-
 format_min<-function(x,...){
   a<-as.numeric(x)
   h<-floor(a/60)
@@ -277,20 +277,30 @@ format_min<-function(x,...){
   return(t)
 }
 
-###################
+###################-
 ### format seconds
-###################
-format_sec<-function(x,...){
-  a<-as.numeric(x)
-  h<-floor(a/3600)
-  min<-floor((a-h*3600)/60)
-  sec<-(a-h*3600-min*60)
-  t<-paste(sprintf("%02d", h), ":",sprintf("%02d", min), ":", sprintf("%06.3f",sec), sep="")
-  return(t)
-}
-###################
+###################-
+format_sec<-function(xx,...){
+  tt<-c()
+  for(i in 1:length(xx)){
+    suppressWarnings(g<-as.numeric(xx[i]))
+    if(!is.na(g)){
+      a<-as.numeric(g)
+      h<-floor(a/3600)
+      min<-floor((a-h*3600)/60)
+      sec<-(a-h*3600-min*60)
+      tt[i]<-paste(sprintf("%02d", h), ":",sprintf("%02d", min), ":", sprintf("%06.3f",sec), sep="")
+    }
+    if(is.na(g)){
+      tt[i]<-"--:--:--"
+    }
+  }
+  return(tt)
+  }
+
+###################-
 ### screen print table function
-###################
+###################-
 
 print_tab<-function(tab,co1=c(8,10),...){
   co<-c(co1, rep(9,8))
@@ -321,9 +331,9 @@ print_tab<-function(tab,co1=c(8,10),...){
   cat(rep("_",sum(co)), "\n", sep="")
 }
 
-###################
+###################-
 ### screen print basic table information (index and numbers)
-###################
+###################-
 
 print_core<-function(plm_stats,...){
   pc1<-pprint(plm_stats, c("no./hour", "CLM", "PLM", "PLMa", "PI", "CLMnr", "PLMnr", "PLMnr_a", "PInr", "Sleep/Wake",
@@ -343,9 +353,9 @@ print_core<-function(plm_stats,...){
 
 }
 
-###################
+###################-
 ### add IMI values
-###################
+###################-
 add_imi<-function(d,...){
   imi<-d$IMI[!is.na(d$IMI) & d$Stage>0]
   iminr<-d$IMInr[!is.na(d$IMInr) & d$Stage>0]
@@ -354,9 +364,9 @@ add_imi<-function(d,...){
 }
 
 
-###################
+###################-
 ### screen print imi distributions
-###################
+###################-
 
 imi_plot<-function(d,...){
   imi1<-d$IMI[!is.na(d$IMI)]
@@ -403,9 +413,9 @@ imi_subplot<-function(v,cw=2,log=0,nr=1,y1=0,...){
   }
 }
 
-###################
+###################-
 ### one page pdf output
-###################
+###################-
 
 lm_pdf<-function(RLs, o1,d1,...){
   pc1<-pprint(o1, c("no./hour", "CLM", "PLM", "PLMa", "PI", "CLMnr", "PLMnr", "PLMnr_a", "PInr", "Sleep/Wake",
@@ -486,9 +496,9 @@ lm_pdf<-function(RLs, o1,d1,...){
   grDevices::dev.off()
 }
 
-###################
+###################-
 ### one page pdf output
-###################
+###################-
 
 lm_pdf_edf<-function(o1,d1,fn,rrules,...){
   pc1<-pprint(o1, c("no./hour", "CLM", "PLM", "PLMa", "PI", "CLMnr", "PLMnr", "PLMnr_a", "PInr", "Sleep/Wake",

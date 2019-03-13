@@ -34,7 +34,7 @@
 #' \dontrun{for(i in 1:length(fnlist)) StartPLMScore_edf(fn=fnlist[i], rrules=1, output=c("screen", "csv", "pdf"))}
 StartPLMScoRe_edf<-function(fn=NA,rrules=NA,output=NA,...){
   op<-options()
-  options(digit.secs=3)
+  options(digits.secs=3)
 
   ###Messages
   m0<-("Please select edf+ annotation file...")

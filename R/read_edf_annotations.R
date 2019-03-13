@@ -27,6 +27,81 @@ EDF.getAnnotation.steph4<-function(edf,...){
   ### for Sleep stage no Loc channel
 
   k<-grep("+",dtRcdRaw3, fixed=TRUE)
+  ## add routine for non-standard annotations with + in text
+  suppressWarnings(h1<-which(is.na(as.numeric(as.character(dtRcdRaw3[k])))))
+  if (length(h1)>0){
+    for (j in 1:length(h1)){
+      dtRcdRaw3[k[h1[j]]]<-sub("+", "*", dtRcdRaw3[k[h1[j]]], fixed=TRUE)
+    }
+  }
+
+  #dtRcdRaw3[k[h1]]
+  #exclude random (?) double onset times, not only double times, also different
+  #delete first one with no entry
+  k<-grep("+",dtRcdRaw3, fixed=TRUE)
+  h2<-which(diff(k)==1)
+  if(length(h2)>0) dtRcdRaw3<-dtRcdRaw3[-k[which(diff(k)==1)]]
+  #	g<-k[which(diff(k)==1)]
+  #	if(length(g)>0){
+  #		for(j in length(g):1){
+  #			if(dtRcdRaw3[g[j]]==dtRcdRaw3[g[j]+1]) dtRcdRaw3<-dtRcdRaw3[-g[j]]
+  #		}
+  #	}
+  #look for other non standard entries
+  ### leave 2, these are those without duration
+  #k<-grep("+",dtRcdRaw3, fixed=TRUE)
+  #g<-k[which(diff(k)==2)]
+  #dtRcdRaw3[sort(c(g, g+1, g+2, g+3))]
+  #if (length(g)>0){
+  #	for(j in length(g):1){
+  #		if(dtRcdRaw3[g[j]+1]=="AutoAnnImported") dtRcdRaw3<-dtRcdRaw3[-c(g[j], g[j]+1)]
+  #	}
+  #}
+  k<-grep("+",dtRcdRaw3, fixed=TRUE)
+  g2<-which(diff(k)==6) # possible if events have same onset and duration
+  if(length(g2)>0){
+    for(i in length(g2):1){
+      a<-dtRcdRaw3[c(k[g2[i]], k[g2[i]]+1)]
+      dtRcdRaw3<-c(dtRcdRaw3[1:(k[g2[i]]+3)], a, dtRcdRaw3[(k[g2[i]]+4):length(dtRcdRaw3)])
+    }
+  }
+  #
+  k<-grep("+",dtRcdRaw3, fixed=TRUE)
+  g2<-which(diff(k)==5) # possible if events have same onset and duration and one of them is sleep stage
+  if(length(g2)>0){
+    for(i in length(g2):1){
+      a<-dtRcdRaw3[c(k[g2[i]], k[g2[i]]+1)]
+      b<-dtRcdRaw3[c(k[g2[i]]+2,k[g2[i]]+3,k[g2[i]]+4)]
+      h<-which(is.element(b,c("Sleep stage W","Sleep stage N1","Sleep stage N2",
+                              "Sleep stage N3","Sleep stage R","Sleep stage 1")))
+      if(length(h)==0) {
+        print("No sleeps stage found")
+        print(edf)
+        print(a)
+        print(b)
+      }
+      if(length(h)>0){
+        if(h==1) dtRcdRaw3<-c(dtRcdRaw3[1:(k[g2[i]]+2)],a,dtRcdRaw3[(k[g2[i]]+3):length(dtRcdRaw3)])
+        if(h==3) dtRcdRaw3<-c(dtRcdRaw3[1:(k[g2[i]]+3)],a,dtRcdRaw3[(k[g2[i]]+4):length(dtRcdRaw3)])
+        if(h==2) print("somethin wrong")
+      }
+    }
+  }
+
+  ##other
+  k<-grep("+",dtRcdRaw3, fixed=TRUE)
+  g<-k[which(diff(k)>4)]
+  if(length(g)>0) {
+    print(table(diff(k)));
+    print(edf)
+    print(strtrim(dtRcdRaw3[sort(c(g, g+1, g+2, g+3, g+4, g+5, g+6))],50))
+
+  }
+
+  #tmp<-dtRcdRaw3
+
+
+
   Onset<-(as.character(dtRcdRaw3[k]))
   Dur<-(as.character(dtRcdRaw3[k+1]))
   Event<-as.character(dtRcdRaw3[k+2])
@@ -44,7 +119,9 @@ EDF.getAnnotation.steph4<-function(edf,...){
 }
 
 
-EDF.import <- function(infile) {
+
+################## EDF Header IMPORT
+EDF.import<-function(infile) {
   # This function permits to import the header part of an EDF file
   #
   # Currently: EDF+ is managed but not verified
@@ -168,3 +245,4 @@ EDF.import <- function(infile) {
   class(obj) <- "EDF"
   return(obj)
 }
+

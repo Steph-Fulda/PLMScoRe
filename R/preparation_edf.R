@@ -1,14 +1,14 @@
 ###Prepare edf table file
 
-###################
+###################-
 ### Recode events based on RLs specifications
-###################
+###################-
 edf_event_recode<-function(d1,...){
 
   #####Helper function, not foreseen to be called by the user
   #####Based on the specified annotations in RLs, creates numeric codes for all events
   #####		that will ensure that the following scoring routines always have the same imput
-  #####
+  #####-
   #####		required input:
   #####			d1 		- annotation from edf plus file
   #####		optional input:
@@ -16,17 +16,33 @@ edf_event_recode<-function(d1,...){
   #####		output:
   #####			an updated data table that will contain two new columns
   #####			T = code domain area
-  #####				1 = Sleep
+  #####				1 = Sleep stage
   #####				2 = leg movements
   #####				3 = respiratory events
-  #####				4 = arousals
-  #####				5 = start/stop events
+  #####				4 = SaO2
+  #####				5 = Arousal
+  #####				6 = other, including start/stop events
+  #####				7 = Position
   #####			T2 = codes within domain area
   #####				0,1,2,3,4 = wake, N1, N2, N3, REM
   #####				10, 11 = left, right leg movement (at a later stage 12 will be added for bilateral LM)
-  #####				20 = respiratory events (for now, maybe later differentiate between the different R events)
-  #####				30 = arousal (again maybe later more differentiation)
-  #####				51, 52 = lights off/start, lights on/stop
+  #####				20,21,22,23, 25 = Hypopnea, obstructive, mixed, central apnea, RERA, 29 unknown apnea
+  #####				30 = Desaturation
+  #####				50 = Arousal
+  #####				301, 302 = lights off/start, lights on/stop
+  #####				0,1,2,3,4 = wake, N1, N2, N3, REM
+  #####				201=supine, 202=left, 203 = right, 204 = prone, 209 = unknown
+
+  #T: 1 = sleep stage; 2 = LM; 	3 = Resp; 	4 = SaO2;	5 = Arousal; 6 = Other; 7 = Position
+
+  #Sleep: 0wake, 1,2,3, 4REM, 9 = unscored
+  #LM 10 left, 11 right, 109,119 = Artefact on left/right leg
+  #Arousal = 50, RERA = 51
+  #Resp	20 hypopnea, 21 obst apnea, 23 central apnea, 22 mixed apnea, 28 = Inspiration, 27 = FlowLimitation?,
+  #	26=paradox. b, 25=RMI respiratory mechanics instability, 24=no resp. mov , 29 = Flow artifact
+  #SpO2 30 desaturation, 39 artifact
+  #Other: 301=Lights off, 302 = Lights on, 303=Device connect, 304 = device disconnect, 309 = other artifacts(Pulse.Averaged-Probe)
+  #Position: 201=supine, 202=left, 203 = right, 204 = prone, 209 = unknown
 
   d1$T<-NA; d1$T2<-NA
 
@@ -34,6 +50,8 @@ edf_event_recode<-function(d1,...){
   d1$T[d1$Event=="Limb movement"]<-2
   d1$T2[d1$Event=="Limb movement" & d1$Loc=="EMG RAT"]<-11
   d1$T2[d1$Event=="Limb movement" & d1$Loc=="EMG LAT"]<-10
+  d1$T2[d1$Event=="Limb movement" & d1$Loc=="RAT"]<-11
+  d1$T2[d1$Event=="Limb movement" & d1$Loc=="LAT"]<-10
 
   #Sleep
   d1$T[d1$Event=="Sleep stage W"]<-1; d1$T2[d1$Event=="Sleep stage W"]<-0
@@ -41,35 +59,42 @@ edf_event_recode<-function(d1,...){
   d1$T[d1$Event=="Sleep stage N2"]<-1; d1$T2[d1$Event=="Sleep stage N2"]<-2
   d1$T[d1$Event=="Sleep stage N3"]<-1; d1$T2[d1$Event=="Sleep stage N3"]<-3
   d1$T[d1$Event=="Sleep stage R"]<-1; d1$T2[d1$Event=="Sleep stage R"]<-4
+  d1$T[d1$Event=="Sleep stage 1"]<-1; d1$T2[d1$Event=="Sleep stage 1"]<-1
+  d1$T[d1$Event=="Sleep stage 2"]<-1; d1$T2[d1$Event=="Sleep stage 2"]<-2
+  d1$T[d1$Event=="Sleep stage 3"]<-1; d1$T2[d1$Event=="Sleep stage 3"]<-3
 
-    #Arousal
+  #Arousal
   d1$T[d1$Event=="EEG arousal"]<-4; d1$T2[d1$Event=="EEG arousal"]<-30
 
   #Respiratory events
-  h<-which(is.element(d1$Event, c("Central apnea", "Apnea", "Obstructive apnea", "Mixed apnea", "Hypopnea", "RERA", "Obstructive hypopnea",
-                                  "Central hypopnea")))
-  d1$T[h]<-3
-  d1$T2[h]<-20
+  d1$T[d1$Event=="Hypopnea"]<-3; d1$T2[d1$Event=="Hypopnea"]<-20
+  d1$T[d1$Event=="Obstructive apnea"]<-3; d1$T2[d1$Event=="Obstructive apnea"]<-20
+  d1$T[d1$Event=="Central apnea"]<-3; d1$T2[d1$Event=="Central apnea"]<-20
+  d1$T[d1$Event=="Mixed apnea"]<-3; d1$T2[d1$Event=="Mixed apnea"]<-20
+  d1$T[d1$Event=="RERA"]<-3; d1$T2[d1$Event=="RERA"]<-25
+  d1$T[d1$Event=="Apnea"]<-3; d1$T2[d1$Event=="Apnea"]<-20
 
 
   #Start/stop
   d1$T[d1$Event=="Lights off"]<-5; d1$T2[d1$Event=="Lights off"]<-51
   d1$T[d1$Event=="Lights on"]<-5; d1$T2[d1$Event=="Lights on"]<-52
 
-  d1<-d1[!is.na(d1$T),]
+
+
+  #d1<-d1[!is.na(d1$T),]
 
   return(d1)
 }
 
 
-###################
+###################-
 ### Determin start/stop of recording
-###################
+###################-
 determine_startstop_edf<-function(d1,...){
 
   #####Helper function, not foreseen to be called by the user
   #####Based on the specified annotations in RLs, searches for a start and stop signal
-  #####
+  #####-
   #####		required input:
   #####			RLs 		- REMLogic specification file (maybe empty)
   #####			d1  		- extracted data table from REMLogic txt file
@@ -80,7 +105,7 @@ determine_startstop_edf<-function(d1,...){
   #####			updated d1 data table with:
   #####				- new column "Onset" where start times are expressed as seconds from start of registration
   #####				- with all events that end before the start and start after the stop removed
-  #####
+  #####-
   #####		Determination of start, in preferred order
   #####		(1) if a start event is defined and that start event is present
   #####		    this will be taken as the start of the TIB
@@ -90,7 +115,7 @@ determine_startstop_edf<-function(d1,...){
   #####		(3) if no start event is present and no sleep is scored
   #####		    it will be assumed that the registration started 30 s before the
   #####		    first event (any of LM, arousal, respiration)
-  #####
+  #####-
   #####		Determination of stop, in preferred order
   #####		(1) if a stop event is defined and that stop event is present
   #####		    this will be taken as the start of the TIB
