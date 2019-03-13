@@ -15,7 +15,7 @@ lm_unil<-function(d,...){
       a<-which(d$T2==10 & d$Offset<d$Offset[i] & d$Offset>=d$Onset[i]-0.5)
       if(length(a)>0) {
         d$Offset[i-1]<-max(d$Offset[c(a,i)])
-        d$Dur[i]<-d$Offset[i-1]-d$Onset[i-1]
+        d$Dur[i-1]<-d$Offset[i-1]-d$Onset[i-1]
         d<-d[-i,]
       }
     }
@@ -23,7 +23,7 @@ lm_unil<-function(d,...){
       a<-which(d$T2==11 & d$Offset<d$Offset[i] & d$Offset>=d$Onset[i]-0.5)
       if(length(a)>0) {
         d$Offset[i-1]<-max(d$Offset[c(a,i)])
-        d$Dur[i]<-d$Offset[i-1]-d$Onset[i-1]
+        d$Dur[i-1]<-d$Offset[i-1]-d$Onset[i-1]
         d<-d[-i,]
       }
     }
