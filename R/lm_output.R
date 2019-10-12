@@ -421,13 +421,16 @@ lm_pdf<-function(RLs, o1,d1,...){
   pc1<-pprint(o1, c("no./hour", "CLM", "PLM", "PLMa", "PI", "CLMnr", "PLMnr", "PLMnr_a", "PInr", "Sleep/Wake",
                            "IMI", "IMInr", "log; mean", "log; SD", "duration", "R events", "Arousal", "% with CLM",
                     "duration, s"))
-  pc11<-pc1[c(1,3,6,7,9,12,13,2,4,5,8,10,11,14,15,16),]
+  pc11<-pc1[c(1,3,6,7,9,12,13,2,4,5,8,10,11,14,15),]
+
+  #[1] "CLM"      "PLM"      "PLMnr_a"  "PI"       "IMI"      "IMInr"    "R events" "CLMnr"    "PLMa"     "PLMnr"
+  #[11] "PInr"     "IMI"      "IMInr"    "R events" "Arousal"
 
   s<-1; a<-1; r<-1; rr<-RLs[[2]][[3]]
   pc11[is.na(pc11)]<-c("-");
-  if(is.na(RLs[[1]][[2]][[1]])) {pc11[,c(4, 6:10)]<-c("-"); s<-0}
-  if(is.na(RLs[[1]][[3]][[1]])) {pc11[c(4,10,16),c(3:10)]<-c("-"); a<-0}
-  if(is.na(RLs[[1]][[4]][[1]])) {pc11[c(2:7,14:15),c(3:10)]<-c("-"); r<-0}
+  if(is.na(RLs[[1]][[2]][[1]])) {pc11[c(3,9,15),c(4, 6:10)]<-c("-"); s<-0} #Sleep scoring
+  if(is.na(RLs[[1]][[3]][[1]])|RLs[[1]][[3]][[1]]==0) {pc11[c(3,9,15),c(3:10)]<-c("-"); a<-0} #
+  if(is.na(RLs[[1]][[4]][[1]])|RLs[[1]][[4]][[1]]==0) {pc11[c(14),c(3:10)]<-c("-"); r<-0}
 
   s1<-substr(format_sec(pc11[1,3:10]),1,8)
   #print_tab(pc11, co1=c(10,9))
@@ -465,7 +468,7 @@ lm_pdf<-function(RLs, o1,d1,...){
   lab1<-c("CLM: candidate LM, LM: leg movements, PLM: periodic LM, IMI: intermovement interval, PI: periodicity index, R events: respiratory events\n")
   lab2<-c("nr: non respiratory eventa associated, a: arousal associated\n")
   lab3<-c("TIB: time in bed, TST: total sleep time\n")
-  ifelse(rr==1, lab4a<-c("-2.0 to 10.25 s"), lab4a<-c("-0.5 to 0.5 s"))
+  ifelse(is.na(rr) | rr==1, lab4a<-c("-2.0 to 10.25 s"), lab4a<-c("-0.5 to 0.5 s"))
   lab4<-paste(c("PLM scoring rules: WASM 2016, CLMr defintion: "), lab4a, "\n",sep="")
   ifelse(s==0, lab5a<-c("**No sleep scorings available\n"), lab5a<-c(""))
   ifelse(r==0, lab5b<-c("**No respiratory event scorings available\n"), lab5b<-c(""))
