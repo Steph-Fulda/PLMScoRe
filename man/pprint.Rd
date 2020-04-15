@@ -70,10 +70,10 @@ sel=c("CLM", "CLMnr", "number", "N1", "REM") will return the number of CLM and C
 REM sleep.
 }
 \examples{
-# Return PLMS index from LM statistics table \\emphasis{lmstat}
+# Return PLMS index from LM statistics table \emphasis{lmstat}
 \dontrun{pprint(lmstat, sel=c("PLM", "no./hour", "TST"))}
 
-# Return PLMS index from LM statistics table \\emphasis{lmstat} but do not round the result
+# Return PLMS index from LM statistics table \emphasis{lmstat} but do not round the result
 \dontrun{pprint(lmstat, sel=c("PLM", "no./hour", "TST"), pretty=0)}
 
 #Return PLMS and PLMSnr index

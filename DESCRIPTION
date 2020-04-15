@@ -13,7 +13,7 @@ Description: PLMScoRe will take information about leg movements, sleep, arousal,
 License: MIT + file LICENSE
 URL: https://github.com/Steph-Fulda/PLMScoRe
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Imports: graphics,
     stats,
     grDevices,

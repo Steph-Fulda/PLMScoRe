@@ -1,6 +1,6 @@
-###################
+###################*
 ### get filestart based on tab and new line
-###################
+###################*
 filestart<-function(fn,...){
   d0<-scan(fn, what="character", sep="\n", quote="", quiet=TRUE, strip.white=FALSE, blank.lines.skip=FALSE)
   h<-which(d0=="")
@@ -11,9 +11,9 @@ filestart<-function(fn,...){
   fs<-list(fs_n=fs_n,fs_t=fs_t)
   return(fs)
 }
-###################
+###################*
 ### extract annotation from unstructured RL file
-###################
+###################*
 ann_find<-function(d0,...){
   m0a<-("Wrong file format! Please check manual for file format specifications.")
   mstop<-c("Error. Execution will be stopped...")
@@ -41,21 +41,21 @@ ann_find<-function(d0,...){
 }
 
 
-###################
+###################*
 ### Generates empty RLs object
-###################
+###################*
 RLspec<-function(...){
 
 #####Helper function, not foreseen to be called by the user
 #####Creates an empty REMLogic specification list with full names
-#####
+#####*
 #####		abbrevated names are easier for the assignment of new values
 #####		full names are hopefully self-explanatory
 #####		required input:
 #####			none
 #####		optional input:
 #####			not foreseen
-#####
+#####*
 #####		The list structure that is created:
 #####			1 - Global
 #####				1.1 - Legs
@@ -157,14 +157,14 @@ RLs<-list(
 return(RLs)
 }
 
-###################
+###################*
 ### RLs - check I
-###################
+###################*
 RLspec_test1<-function(RLs,...){
 
 #####Helper function, not foreseen to be called by the user
 #####Tests wether a list of REMLogic specifications (RLs) has a minimum of needed information.
-#####
+#####*
 #####		It tests:
 #####		- if at least 1 leg channel is given
 #####		- if at least 1 LM event is given
@@ -181,27 +181,27 @@ RLspec_test1<-function(RLs,...){
 	return(error1)
 }
 
-###################
+###################*
 ### RLs - check II
-###################
+###################*
 
 RLspec_test2<-function(RLs,...){
 
 #####Helper function, not foreseen to be called by the user
 #####Tests wether a list of REMLogic specifications (RLs) has valid information given the filepath to the txt file.
-#####
+#####*
 #####		required input:
 #####			RLs = REMLogic specification file
 #####			fn = file path to REMLogic txt file
 #####		optional input:
 #####			not foreseen
-#####
+#####*
 #####		It tests:
 #####		- for problems when reading the txt file as a table given the specifications
 #####		- if at least one of the specified leg channels is present
 #####		- if at least one of the specified leg events is present
 #####		- if the time format is correct
-#####
+#####*
 #####		It also checks:
 #####		- in case sleep stages were specified, whether these are present
 #####		- in case arousals were specified, whether these are present
@@ -247,9 +247,9 @@ RLspec_test2<-function(RLs,...){
 	return(RLs)
 }
 
-###################
+###################*
 ### add annotations to existing one without duplicates
-###################
+###################*
 annotation_add<-function(RLs_c, v1,...){
 
 #####Helper function, not foreseen to be called by the user
@@ -269,9 +269,9 @@ annotation_add<-function(RLs_c, v1,...){
 }
 
 
-###################
+###################*
 ### print RLs in a nicer format on screen
-###################
+###################*
 RLs_prettyprint<-function(RLs,...){
 #####Helper function, not foreseen to be called by the user
 #####Asks user specify arousal event annotations
@@ -308,9 +308,9 @@ RLs_prettyprint<-function(RLs,...){
 		cat("\t", names(RLs[[2]])[4], ": ", unlist(RLs[[2]][4]), "\n", sep=" ")
 }
 
-###################
+###################*
 ### Print only RLs headers
-###################
+###################*
 RLs_prettyprint2<-function(RLs,...){
 #####Helper function, not foreseen to be called by the user
 #####Asks user specify arousal event annotations
@@ -331,13 +331,13 @@ RLs_prettyprint2<-function(RLs,...){
 }
 
 
-###################
+###################*
 ### Print very basic stats
-###################
+###################*
 prestats_print<-function(RLs,d1,...){
 #####Helper function, not foreseen to be called by the user
 #####At the end of data read in and before PLMscoring will print an overview over available data
-#####
+#####*
 #####		required input:
 #####			RLs 		- REMLogic specification file (maybe empty)
 #####			d1  		- extracted data table from REMLogic txt file
@@ -377,9 +377,9 @@ prestats_print<-function(RLs,d1,...){
 
 }
 
-###################
+###################*
 ### sub-function to format decimal hour for printing
-###################
+###################*
 format_hour<-function(x,...){##input is decimal hour
 	x<-as.numeric(x)
 	h<-floor(x)

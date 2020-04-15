@@ -1,39 +1,43 @@
-######################################
+######################################*
 ##PLM Scoring Functions
-######################################
+######################################*
 
-#####################################
+#####################################*
 #### 1 LM unilateral - join unilateral LMs with offset-onset < 0.5 s
-#####################################
+#####################################*
 
 lm_unil<-function(d,...){
   llmj<-0; rlmj<-0
   d$Offset<-NA; d$Offset<-d$Onset+d$Dur
   d<-d[order(d$Onset),]
-  for(i in dim(d)[1]:2){
+  for(i in (dim(d)[1]-1):1){
     if(d$T2[i]==10 & !is.na(d$T2[i])){
-      a<-which(d$T2==10 & d$Offset<d$Offset[i] & d$Offset>=d$Onset[i]-0.5)
+      a<-which(d$T2==10 & d$Onset < d$Offset[i]+0.5 & d$Onset>d$Onset[i])
       if(length(a)>0) {
-        d$Offset[i-1]<-max(d$Offset[c(a,i)])
-        d$Dur[i-1]<-d$Offset[i-1]-d$Onset[i-1]
-        d<-d[-i,]
+        d$Offset[i]<-max(d$Offset[c(a,i)])
+        d$Onset[i]<-min(d$Onset[c(a,i)]) # safety move
+        d$Dur[i]<-d$Offset[i]-d$Onset[i]
+        d<-d[-a,]
       }
     }
     if(d$T2[i]==11& !is.na(d$T2[i])){
-      a<-which(d$T2==11 & d$Offset<d$Offset[i] & d$Offset>=d$Onset[i]-0.5)
+      a<-which(d$T2==11 & d$Onset < d$Offset[i]+0.5 & d$Onset>d$Onset[i])
       if(length(a)>0) {
-        d$Offset[i-1]<-max(d$Offset[c(a,i)])
-        d$Dur[i-1]<-d$Offset[i-1]-d$Onset[i-1]
-        d<-d[-i,]
+        d$Offset[i]<-max(d$Offset[c(a,i)])
+        d$Onset[i]<-min(d$Onset[c(a,i)]) # safety move
+        d$Dur[i]<-d$Offset[i]-d$Onset[i]
+        d<-d[-a,]
       }
     }
   }
   return(d)
 }
 
-#####################################
+
+
+#####################################*
 #### 2 LM test duration  < 0.5 and remove
-#####################################
+#####################################*
 
 lm_dur1<-function(d,...){
   llmd<-0; rlmd<-0
@@ -51,9 +55,9 @@ lm_dur1<-function(d,...){
   return(d)
 }
 
-#####################################
+#####################################*
 #### 2 LM test duration  > 10 monolateral and denote in nonCLM
-#####################################
+#####################################*
 
 lm_dur2<-function(d,...){
   d$nonCLM<-NA; d$nonCLM[is.element(d$T2, c(10,11))]<-0
@@ -67,9 +71,9 @@ lm_dur2<-function(d,...){
   return(d)
 }
 
-#####################################
+#####################################*
 #### 4 LM join bilateral LM - new rules
-#####################################
+#####################################*
 
 ## change T2 = 12 for bilateral
 ## new variable NoBil = Number of monolateral LM joined
@@ -109,9 +113,9 @@ lm_bil<-function(d,...){
   return(d)
 }
 
-#####################################
+#####################################*
 #### 5 label respiratory LM
-#####################################
+#####################################*
 
 ## new variable rLM (for LM 1 if rLM, for R events 1 if at least 1 CLMr)
 
@@ -143,9 +147,9 @@ rlm<-function(RLs, d,...){
   return(d)
 }
 
-#####################################
+#####################################*
 #### 5a label respiratory LM edf
-#####################################
+#####################################*
 
 ## new variable rLM (for LM 1 if rLM, for R events 1 if at least 1 CLMr)
 
@@ -178,9 +182,9 @@ rlm_edf<-function(rrules, d,...){
   return(d)
 }
 
-#####################################
+#####################################*
 #### 6 determine PLM
-#####################################
+#####################################*
 
 plm<-function(d, RLs,...){
   d$PLM<-NA; d$PLMnr<-NA; 	#1 = without removing rLM, 2 = with rLM removed
@@ -249,10 +253,10 @@ plm<-function(d, RLs,...){
 
 
 
-###################
+###################*
 ###6b PLM classification - sub function classify PLM-No vector
-###################
-##########
+###################*
+##########*
 
 plm_classify<-function(v,...){
   # v = vector of plmNo and NA
@@ -288,9 +292,9 @@ plm_classify<-function(v,...){
   return(pr)
 }
 
-###################
+###################*
 ###7 add sleep stage and arousal
-###################
+###################*
 
 add_sleep<-function(d,...){
   d$AR<-0; d$Stage<-NA
